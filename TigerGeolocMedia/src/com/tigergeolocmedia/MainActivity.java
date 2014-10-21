@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 	}
 
 	protected void takePicture() {
-		// Création du fichier où la photo sera sauvegardée.
+		// Crï¿½ation du fichier oï¿½ la photo sera sauvegardï¿½e.
 		File pictureFile = null;
 		try {
 			pictureFile = createPictureFile();
@@ -143,3 +143,4 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 }
+
