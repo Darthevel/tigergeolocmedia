@@ -8,10 +8,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tigergeolocmedia.MainActivity" >
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_message"
-        android:textSize="26sp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="52dp" >
+
+        <Button
+            android:id="@+id/buttonPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/takePicture" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonMovie"
+        android:layout_alignBottom="@+id/buttonMovie"
+        android:layout_alignParentRight="true"
+        android:text="@string/takeSound" />
+
+    <Button
+        android:id="@+id/buttonMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/takeMovie" />
 
 </RelativeLayout>
