@@ -75,13 +75,13 @@ public class MainActivity extends Activity {
 
 	public void record() {
 		if (soundController.isRecording()) {
-			recordButton.setText(R.string.reccord);
-			soundController.stopReccording();
+			recordButton.setText(R.string.record);
+			soundController.stopRecording();
 			soundController.setRecording(false);
 			historic.add(soundController.getMedia());
 		} else {
-			recordButton.setText(R.string.stopReccord);
-			soundController.startReccording();
+			recordButton.setText(R.string.stopRecord);
+			soundController.startRecording();
 			soundController.setRecording(true);
 		}
 	}

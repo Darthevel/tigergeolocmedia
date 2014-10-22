@@ -39,13 +39,13 @@ public class SoundController {
 		return media;
 	}
 
-	public void stopReccording() {
+	public void stopRecording() {
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;
 	}
 
-	public void startReccording() {
+	public void startRecording() {
 		media = new Media(MediaType.SOUND); //Initialiser avec AUDIO_TYPE	
 		
 //		mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
