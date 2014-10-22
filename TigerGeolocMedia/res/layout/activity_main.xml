@@ -8,44 +8,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tigergeolocmedia.MainActivity" >
 
-        <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp" >
 
         <Button
             android:id="@+id/buttonPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/takePicture" />
-    </LinearLayout>
+    
 
-    <Button
-        android:id="@+id/buttonMovie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:text="@string/takeMovie" />
+        <Button
+            android:id="@+id/recordButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/buttonMovie"
+            android:layout_alignBottom="@+id/buttonMovie"
+            android:layout_alignRight="@+id/pictureView"
+            android:text="@string/reccord" />
 
-    <Button
-        android:id="@+id/recordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/reccord" />
+        <Button
+            android:id="@+id/buttonMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/buttonPicture"
+            android:layout_alignBottom="@+id/buttonPicture"
+            android:layout_alignRight="@+id/playButton"
+            android:text="@string/takeMovie" />
+        
+                <ImageView
+                    android:id="@+id/pictureView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/playButton"
+                    android:src="@drawable/ic_launcher" />
 
-    <Button
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/recordButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp"
-        android:text="@string/play" />
+                <Button
+                    android:id="@+id/playButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/buttonMovie"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="22dp"
+                    android:text="@string/play" />
 
 </RelativeLayout>
