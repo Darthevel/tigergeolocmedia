@@ -23,9 +23,9 @@ public class MainActivity extends Activity {
 	 * Contrôleur d'images.
 	 */
 	private PictureController pictureController = new PictureController(this);
-	
 	private SoundController soundController = new SoundController();
-	
+	private Historic historic = new Historic();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,9 +38,9 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				takePicture();
 			}
-			
+
 		});
-			
+
 		buttonMovie = (Button) findViewById(R.id.buttonMovie);
 		buttonMovie.setOnClickListener(new View.OnClickListener() {
 
@@ -48,8 +48,9 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				takeMovie();
 			}
-			
+
 		});
+
 		recordButton = (Button) findViewById(R.id.recordButton);
 		recordButton.setOnClickListener(new View.OnClickListener() {
 
@@ -57,9 +58,9 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				record();
 			}
-			
+
 		});
-		
+
 		playButton = (Button) findViewById(R.id.playButton);
 		playButton.setOnClickListener(new View.OnClickListener() {
 
@@ -67,55 +68,46 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				playSound();
 			}
-			
-		});
 
-		
+		});
 		pictureView = (ImageView) findViewById(R.id.pictureView);
 	}
 
-	public void record()
-	{
-		if (soundController.isRecording)
-		{
+	public void record() {
+		if (soundController.isRecording()) {
 			recordButton.setText(R.string.reccord);
 			soundController.stopReccording();
-			soundController.isRecording = false;
-		}
-		else
-		{
+			soundController.setRecording(false);
+			historic.add(soundController.getMedia());
+		} else {
 			recordButton.setText(R.string.stopReccord);
 			soundController.startReccording();
-			soundController.isRecording = true;
+			soundController.setRecording(true);
 		}
 	}
-	
-	public void playSound()
-	{
-		if (soundController.isPlaying)
-		{
+
+	public void playSound() {
+		if (soundController.isPlaying()) {
 			playButton.setText(R.string.play);
 			soundController.stopPlaying();
-			soundController.isPlaying = false;
-		}
-		else
-		{
+			soundController.setPlaying(false);
+		} else {
 			playButton.setText(R.string.stop);
 			soundController.startPlaying();
-			soundController.isPlaying = true;
+			soundController.setPlaying(true);
 		}
 	}
 
 	protected void takeMovie() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void takePicture() {
+
 		// On confie le boulot au controleur.
 		pictureController.record();
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,9 +127,6 @@ public class MainActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-    
- 
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -175,8 +164,5 @@ public class MainActivity extends Activity {
 		
 		/* Associate the Bitmap to the ImageView */
 		pictureView.setImageBitmap(currentBitmap);
-	}
-	
-
-	
+	}	
 }
