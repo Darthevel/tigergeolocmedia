@@ -9,6 +9,9 @@
     <string name="stopReccord">Stop Reccord</string>
     <string name="play">Play</string>
     <string name="stop">Stop</string>
+    <string name="takePicture">Image</string>
+    <string name="takeMovie">Video</string>
+    <string name="takeSound">Son</string>
     
     
 

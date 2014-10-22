@@ -8,6 +8,8 @@
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
     
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
  	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -28,3 +30,4 @@
     </application>
 
 </manifest>
+
