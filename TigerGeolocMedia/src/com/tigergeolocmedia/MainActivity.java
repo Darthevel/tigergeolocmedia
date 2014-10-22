@@ -18,8 +18,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
-	
-	
+
 	public final static String PICTURE_DIRECTORY = "/DCIM/Camera/TigerCamera";
 	public final static String MOVIE_DIRECTORY = "DCIM/Camera/TigerCamera";
 	public final static String IMAGE_PREFIX = "TIGER_";
@@ -31,14 +30,15 @@ public class MainActivity extends Activity {
 	private Button buttonMovie = null;
 	private Button recordButton = null;
 	private Button playButton = null;
-	
+
 	private SoundController soundController = new SoundController();
-	
+	private Historic historic = new Historic();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-				
+
 		buttonPicture = (Button) findViewById(R.id.buttonPicture);
 		buttonPicture.setOnClickListener(new View.OnClickListener() {
 
@@ -46,9 +46,9 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				takePicture();
 			}
-			
+
 		});
-			
+
 		buttonMovie = (Button) findViewById(R.id.buttonMovie);
 		buttonMovie.setOnClickListener(new View.OnClickListener() {
 
@@ -56,9 +56,9 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				takeMovie();
 			}
-			
+
 		});
-		
+
 		recordButton = (Button) findViewById(R.id.recordButton);
 		recordButton.setOnClickListener(new View.OnClickListener() {
 
@@ -66,9 +66,9 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				record();
 			}
-			
+
 		});
-		
+
 		playButton = (Button) findViewById(R.id.playButton);
 		playButton.setOnClickListener(new View.OnClickListener() {
 
@@ -76,65 +76,55 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				playSound();
 			}
-			
+
 		});
-		
+
 	}
 
-	public void record()
-	{
-		if (soundController.isRecording)
-		{
+	public void record() {
+		if (soundController.isRecording()) {
 			recordButton.setText(R.string.reccord);
 			soundController.stopReccording();
-			soundController.isRecording = false;
-		}
-		else
-		{
+			soundController.setRecording(false);
+			historic.add(soundController.getMedia());
+		} else {
 			recordButton.setText(R.string.stopReccord);
 			soundController.startReccording();
-			soundController.isRecording = true;
+			soundController.setRecording(true);
 		}
 	}
-	
-	public void playSound()
-	{
-		if (soundController.isPlaying)
-		{
+
+	public void playSound() {
+		if (soundController.isPlaying()) {
 			playButton.setText(R.string.play);
 			soundController.stopPlaying();
-			soundController.isPlaying = false;
-		}
-		else
-		{
+			soundController.setPlaying(false);
+		} else {
 			playButton.setText(R.string.stop);
 			soundController.startPlaying();
-			soundController.isPlaying = true;
+			soundController.setPlaying(true);
 		}
-	}
-	
-	protected void taKeSound() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	protected void takeMovie() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void takePicture() {
-		// Cr�ation du fichier o� la photo sera sauvegard�e.
+		// Creation du fichier o� la photo sera sauvegard�e.
 		File pictureFile = null;
 		try {
 			pictureFile = createPictureFile();
 			if (pictureFile == null) {
 				return;
 			}
-			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			
-			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(pictureFile));
-			
+			Intent takePictureIntent = new Intent(
+					MediaStore.ACTION_IMAGE_CAPTURE);
+
+			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+					Uri.fromFile(pictureFile));
+
 			startActivityForResult(takePictureIntent, ACTION_TAKE_PHOTO_B);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -144,29 +134,33 @@ public class MainActivity extends Activity {
 
 	@SuppressLint("SimpleDateFormat")
 	private File createPictureFile() throws IOException {
-		
-		
-		if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+
+		if (!Environment.MEDIA_MOUNTED.equals(Environment
+				.getExternalStorageState())) {
 			// Todo : afficher un dialog
 			return null;
 		}
-		
+
 		String mediaMounted = Environment.MEDIA_MOUNTED;
 		String externalStorageState = Environment.getExternalStorageState();
-		
-		File externalStorageDirectory  = Environment.getExternalStorageDirectory();
+
+		File externalStorageDirectory = Environment
+				.getExternalStorageDirectory();
 
 		// Create an image file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+				.format(new Date());
 		String imageFileName = IMAGE_PREFIX + timeStamp + "_";
-		File pictureDirectory = new File(externalStorageDirectory + "/" + PICTURE_DIRECTORY);
+		File pictureDirectory = new File(externalStorageDirectory + "/"
+				+ PICTURE_DIRECTORY);
 		boolean exists = pictureDirectory.exists();
 		if (!exists) {
 			pictureDirectory.mkdirs();
 		}
-		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, pictureDirectory);
+		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX,
+				pictureDirectory);
 		return imageF;
-	}	
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
