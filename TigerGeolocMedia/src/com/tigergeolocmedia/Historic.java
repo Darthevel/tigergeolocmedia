@@ -25,4 +25,9 @@ public class Historic {
 		mediaList.add(0, media);
 	}
 
+	public Historic() {
+		super();
+	}
+	
+
 }
