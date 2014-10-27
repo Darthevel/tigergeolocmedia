@@ -24,13 +24,14 @@ public class MainActivity extends Activity {
 	 */
 	private PictureController pictureController = new PictureController(this);
 	private SoundController soundController = new SoundController();
-	private Historic historic = new Historic();
+	private Historic historic = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		historic = new Historic(getApplicationContext());
 		buttonPicture = (Button) findViewById(R.id.buttonPicture);
 		buttonPicture.setOnClickListener(new View.OnClickListener() {
 
