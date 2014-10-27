@@ -7,13 +7,15 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
-    
-    <uses-feature android:name="android.hardware.camera" />
- 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- localisation GPS -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- accès internet -->
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+ <!-- localisation GPS -->
+    <uses-permission android:name="android.permission.INTERNET" />
+ <!-- accès internet -->
 
     <application
         android:allowBackup="true"
@@ -28,6 +30,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".PersonActivity"
+            android:label="@string/title_activity_person" >
         </activity>
     </application>
 

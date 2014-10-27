@@ -22,27 +22,40 @@ public class Media {
 		this.path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + this.name;
 		//TODO finaliser la creation du media ==> gerer l'xtension en fonction du type de fichier, et verifier le path (creation de dossier etc)
 	}
+	
+	public Media() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getDescription() {
 		return description;
 	}
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public MediaType getType() {
 		return type;
 	}
+	
 	public void setType(MediaType type) {
 		this.type = type;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getPath() {
 		return path;
 	}
+	
 	public void setPath(String path) {
 		this.path = path;
 	}

@@ -30,13 +30,14 @@ public class MainActivity extends Activity {
 	private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
 	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
 	private SoundController soundController = new SoundController();
-	private Historic historic = new Historic();
+	private Historic historic = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		historic = new Historic(getApplicationContext());
 		buttonPicture = (Button) findViewById(R.id.buttonPicture);
 		buttonPicture.setOnClickListener(new View.OnClickListener() {
 
