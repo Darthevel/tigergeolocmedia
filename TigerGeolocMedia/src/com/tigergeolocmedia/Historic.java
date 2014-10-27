@@ -58,7 +58,6 @@ public class Historic {
 			if (prefs.contains(historicKey + i))
 				setMedia(prefs.getString(historicKey + i, null));
 		}
-		Log.e("MediaList", mediaList.toString());
 	}
 	
 	public void setMedia(String info)
@@ -68,7 +67,7 @@ public class Historic {
 		
 		result = info.split(";");
 		media.setName(result[0]);
-		Log.e("MediaType", result[1]);//media.setType(result[1]);
+		//media.setType(result[1]);
 		media.setPath(result[2]);
 		media.setDescription(result[3]);
 		mediaList.add(media);
