@@ -16,13 +16,12 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-public class PictureController implements MediaController {
-	private String currentPicturePath;
+public class PictureController extends MediaControllerBase {
 	private Activity activity;
 	
 
-	public PictureController(Activity activity) {
-		super();
+	public PictureController(String prefix, String suffix, String directory, Activity activity) {
+		super(prefix, suffix, directory);
 		this.activity = activity;
 	}
 
@@ -31,13 +30,17 @@ public class PictureController implements MediaController {
 		// Cr�ation du fichier o� la photo sera sauvegard�e.
 		File pictureFile = null;
 		try {
-			pictureFile = createPictureFile();
+			pictureFile = createFile();
 			if (pictureFile == null) {
 				return;
 			}
+			Media media = new Media(MediaType.PICTURE);
+			this.media = media;
+			media.setPath(pictureFile.getAbsolutePath());
+			media.setName(pictureFile.getName());
+
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			
-			currentPicturePath = pictureFile.getAbsolutePath();
 			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(pictureFile));
 			
 			activity.startActivityForResult(takePictureIntent, Constants.ACTION_TAKE_PICTURE);
@@ -47,40 +50,8 @@ public class PictureController implements MediaController {
 		}
 	}
 	
-	@SuppressLint("SimpleDateFormat")
-	private File createPictureFile() throws IOException {
-		
-		
-		if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-			// Todo : afficher un dialog
-			return null;
-		}
-		
-		String mediaMounted = Environment.MEDIA_MOUNTED;
-		String externalStorageState = Environment.getExternalStorageState();
-		
-		File externalStorageDirectory  = Environment.getExternalStorageDirectory();
-
-		// Create an image file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		String imageFileName = Constants.IMAGE_PREFIX + timeStamp + "_";
-		File pictureDirectory = new File(externalStorageDirectory + "/" + Constants.PICTURE_DIRECTORY);
-		boolean exists = pictureDirectory.exists();
-		if (!exists) {
-			pictureDirectory.mkdirs();
-		}
-		File imageF = File.createTempFile(imageFileName, Constants.JPEG_FILE_SUFFIX, pictureDirectory);
-		return imageF;
-	}
 
 
-	public String getCurrentPicturePath() {
-		return currentPicturePath;
-	}
-
-	public void setCurrentPicturePath(String currentPicturePath) {
-		this.currentPicturePath = currentPicturePath;
-	}
 
 	@Override
 	public void play() {
@@ -102,7 +73,7 @@ public class PictureController implements MediaController {
 	 * @return
 	 */
 	public Bitmap computeCurrentBitmap(int targetW, int targetH) {
-		if (currentPicturePath == null) {
+		if (media == null) {
 			return null;
 		}
 		int photoW = 0;
@@ -111,12 +82,12 @@ public class PictureController implements MediaController {
 		/* Get the size of the image */
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 		bmOptions.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(getCurrentPicturePath(), bmOptions);
+		BitmapFactory.decodeFile(media.getPath(), bmOptions);
 		photoW = bmOptions.outWidth;
 		photoH = bmOptions.outHeight;
 
  		// Get the bitmap's EXIF orientation
-		int orientationInDegrees = computeBitmapOriendegreesInDegrees(getCurrentPicturePath());
+		int orientationInDegrees = computeBitmapOriendegreesInDegrees(media.getPath());
 		
 
 		
@@ -132,7 +103,7 @@ public class PictureController implements MediaController {
 		bmOptions.inPurgeable = true;
 
 		/* Decode the JPEG file into a Bitmap */
-		Bitmap bitmap = BitmapFactory.decodeFile(getCurrentPicturePath(), bmOptions);
+		Bitmap bitmap = BitmapFactory.decodeFile(media.getPath(), bmOptions);
 		
 		
 		if (orientationInDegrees != 0) {

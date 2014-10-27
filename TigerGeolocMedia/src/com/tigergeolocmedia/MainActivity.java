@@ -1,5 +1,7 @@
 package com.tigergeolocmedia;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,7 +24,11 @@ public class MainActivity extends Activity {
 	/**
 	 * Contrôleur d'images.
 	 */
-	private PictureController pictureController = new PictureController(this);
+	
+	// 	public PictureController(String prefix, String suffix, String directory, Activity activity) {
+
+	private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
 	private SoundController soundController = new SoundController();
 	private Historic historic = new Historic();
 
@@ -99,7 +105,7 @@ public class MainActivity extends Activity {
 	}
 
 	protected void takeMovie() {
-		// TODO Auto-generated method stub
+		movieController.record();
 
 	}
 
@@ -139,6 +145,13 @@ public class MainActivity extends Activity {
 			}
 			break;
 		} // ACTION_TAKE_PICTURE_B
+		// 
+		case Constants.ACTION_TAKE_MOVIE: {
+			if (resultCode == RESULT_OK) {
+				handleMovie();
+			}
+			break;
+		} // ACTION_TAKE_PICTURE_B
 
 		} // switch
 	}
@@ -146,9 +159,10 @@ public class MainActivity extends Activity {
 
 	private void handlePicture() {
 
-		if (pictureController.getCurrentPicturePath() != null) {
+		if (pictureController.getMedia() != null) {
 			setPic();
-			pictureController.setCurrentPicturePath(null);
+			pushToHistoric(pictureController.getMedia());
+			pictureController.setMedia(null);
 		}
 	}
 
@@ -164,5 +178,29 @@ public class MainActivity extends Activity {
 		
 		/* Associate the Bitmap to the ImageView */
 		pictureView.setImageBitmap(currentBitmap);
-	}	
+	}
+	
+	private void handleMovie() {
+
+		if (movieController.getMedia() != null) {
+			setMovie();
+			pushToHistoric(movieController.getMedia());
+			movieController.setMedia(null);
+		}
+	}
+
+	private void pushToHistoric(Media media) {
+		historic.add(media);
+		
+		// Pour test
+		List<Media> mediaList = historic.getMediaList();
+		mediaList = historic.getMediaList();
+;		
+	}
+
+	private void setMovie() {
+		// TODO 
+		
+	}
+
 }
