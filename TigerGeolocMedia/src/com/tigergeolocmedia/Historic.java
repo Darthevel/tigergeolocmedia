@@ -41,7 +41,7 @@ public class Historic {
 		int historicNumber = 1;
 		for (Media media : mediaList)
 		{
-			editor.putString(historicKey + historicNumber, media.getName() + ";" + media.getType() + ";" + media.getPath() + ";" + media.getDescription());
+			editor.putString(historicKey + historicNumber, media.getName() + ";" + media.getType().toString() + ";" + media.getPath() + ";" + media.getDescription());
 			historicNumber++;
 		}
 		editor.commit();
