@@ -67,7 +67,14 @@ public class Historic {
 		
 		result = info.split(";");
 		media.setName(result[0]);
-		//media.setType(result[1]);
+		
+		if (result[1].equals("PICTURE"))
+			media.setType(MediaType.PICTURE);
+		else if (result[1].equals("MOVIE"))
+			media.setType(MediaType.MOVIE);
+		else if (result[1].equals("SOUND"))
+			media.setType(MediaType.SOUND);
+
 		media.setPath(result[2]);
 		media.setDescription(result[3]);
 		mediaList.add(media);
