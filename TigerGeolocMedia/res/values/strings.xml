@@ -15,4 +15,10 @@
     <string name="title_activity_person">PersonActivity</string>
     <string name="title_activity_historic">HistoricActivity</string>
 
+   	<string-array name="items">
+        <item>Capturer un media</item>
+        <item>les médias autour de moi</item>
+        <item>les medias de ceux que je suis</item>
+        <item>mon compte</item>
+    </string-array>
 </resources>
