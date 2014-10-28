@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,21 +51,27 @@ public class CustomListAdapter extends BaseAdapter {
 		ImageView image = (ImageView) convertView.findViewById(R.id.image);
 		TextView title = (TextView) convertView.findViewById(R.id.title);
 		TextView type = (TextView) convertView.findViewById(R.id.mediaType);
-		TextView genre = (TextView) convertView.findViewById(R.id.genre);
-		TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
+//		TextView genre = (TextView) convertView.findViewById(R.id.genre);
+//		TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
 
 		// getting movie data for the row
 		Media m = mediaList.get(position);
 		
+		//image
+		if (m.getType() != MediaType.SOUND)
+		{
+			Bitmap myBitmap = BitmapFactory.decodeFile(m.getPath());
+		    image.setImageBitmap(myBitmap);		
+		}
+
 		// title
 		title.setText(m.getName());
 		
-		// rating
-		type.setText("Rating: " + String.valueOf(m.getType().toString()));
+		// MediaType
+		type.setText("Type: " + String.valueOf(m.getType().toString()));
 		
 //		// genre
 //		genre.setText(genreStr);
-//		
 //		// release year
 //		year.setText(String.valueOf(m.getYear()));
 

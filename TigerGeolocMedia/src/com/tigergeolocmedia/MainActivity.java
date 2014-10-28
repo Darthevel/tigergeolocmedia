@@ -123,6 +123,12 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+    public void clickOnHistoric(MenuItem item)
+    {
+  	  Intent intent = new Intent(this, HistoricActivity.class);
+  	  startActivity(intent);
+    }
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -130,7 +136,10 @@ public class MainActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			return true;
+			return true;	
+		}		
+		if (id == R.id.action_historic) {
+			clickOnHistoric(item);	
 		}
 		return super.onOptionsItemSelected(item);
 	}
