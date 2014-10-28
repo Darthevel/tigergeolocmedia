@@ -3,6 +3,7 @@ package com.tigergeolocmedia;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,6 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+/**
+ * Activity principale de l'application.
+ * @author HumanBooster
+ *
+ */
 public class MainActivity extends Activity {
 
 	private Button buttonPicture;
@@ -21,23 +27,42 @@ public class MainActivity extends Activity {
 	private Button recordButton = null;
 	private Button playButton = null;
 	
+	private static String INITIAL_KEY = "INITIAL_KEY";
+	/**
+	 * Indique si l'application vient de démarrer : quand on bouge l'écran (portrait -> paysage ou le contraire)
+	 * initial passe à false. Ce boolean est utilisé par la methode {@link #onWindowFocusChanged(boolean)}.
+	 */
+	private boolean initial = true;
+	
 	/**
 	 * Contrôleur d'images.
 	 */
-	
-	// 	public PictureController(String prefix, String suffix, String directory, Activity activity) {
-
 	private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+	
+	
+	/**
+	 * Contrôleur de video.
+	 */
 	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+	
+	/**
+	 * Contro^leur de son.
+	 */
 	private SoundController soundController = new SoundController();
+	
+	/**
+	 * Historique des média captés par l'application.
+	 */
 	private Historic historic = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Context context = getApplicationContext();
 
-		historic = new Historic(getApplicationContext());
+		historic = Historic.getInstance(context);
 		buttonPicture = (Button) findViewById(R.id.buttonPicture);
 		buttonPicture.setOnClickListener(new View.OnClickListener() {
 
@@ -181,6 +206,20 @@ public class MainActivity extends Activity {
 		pictureView.setImageBitmap(currentBitmap);
 	}
 	
+	private void setPic(Media media) {
+		/* There isn't enough memory to open up more than a couple camera photos */
+		/* So pre-scale the target bitmap into which the file is decoded */
+
+		/* Get the size of the ImageView */
+		int targetW = pictureView.getWidth();
+		int targetH = pictureView.getHeight();
+		
+		Bitmap currentBitmap = PictureController.computeBitmap(media, targetW, targetH);
+		
+		/* Associate the Bitmap to the ImageView */
+		pictureView.setImageBitmap(currentBitmap);
+	}
+	
 	private void handleMovie() {
 
 		if (movieController.getMedia() != null) {
@@ -195,13 +234,55 @@ public class MainActivity extends Activity {
 		
 		// Pour test
 		List<Media> mediaList = historic.getMediaList();
-		mediaList = historic.getMediaList();
-;		
+		mediaList = historic.getMediaList();		
 	}
 
 	private void setMovie() {
 		// TODO 
 		
 	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+		initial = savedInstanceState.getBoolean(INITIAL_KEY);
+	}
+	
+	
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onWindowFocusChanged(boolean)
+	 */
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		// 
+		if (!initial) {
+			restoreLatestmedia();
+		}
+	}
+
+	private void restoreLatestmedia() {
+		Media latestMedia = historic.getLatestMedia();
+		
+		// Pour l'instant, je ne gère que les images.
+		if (latestMedia != null) {
+			if (latestMedia.getType().equals(MediaType.PICTURE)) {
+				setPic(latestMedia);
+				
+			}
+		}
+		
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(INITIAL_KEY, false);
+	}
+	
+	
 
 }

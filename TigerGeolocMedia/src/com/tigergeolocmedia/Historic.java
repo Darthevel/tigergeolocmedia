@@ -6,15 +6,27 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
+import android.widget.Toast;
 
 /**
  * 
  * Gestion de l'historique Media
- * Limitation du stockage des medias dans le telephone
+ * Limitation du stockage des medias dans le telephone.
+ * Cette classe implémente le pattern Singleton.
  * 
  **/
 public class Historic {
+	
+	/**
+	 * Instance unique du singleton Historic.
+	 */
+	private static Historic historicInstance;
+	
+	
+	/**
+	 * Context de l'application.
+	 */
+	private static Context context;
 
 	public static final int MAX_LENGTH = 10;
 	public static final String MY_PREFS_NAME = "MyPrefsFile";
@@ -28,6 +40,10 @@ public class Historic {
 		return mediaList;
 	}
 
+	/**
+	 * Ajout d'un {@link Media} dans l'historique.
+	 * @param media
+	 */
 	public void add(Media media) {
 		if (mediaList.size() == MAX_LENGTH)
 			mediaList.remove(MAX_LENGTH - 1);
@@ -35,6 +51,9 @@ public class Historic {
 		saveHistoric();
 	}
 
+	/**
+	 * Sauvegarde de l'historique.
+	 */
 	public void saveHistoric()
 	{
 		Editor editor = prefs.edit();
@@ -45,9 +64,23 @@ public class Historic {
 			historicNumber++;
 		}
 		editor.commit();
+		Toast.makeText(context, "" + mediaList.size() + " stockés dans l'historique", Toast.LENGTH_LONG).show();
 	}
 	
-	public Historic(Context context) {		
+	/**
+	 * Vide l'historique.
+	 */
+	public void clear() {
+		mediaList.clear();
+		saveHistoric();
+	}
+	
+	/**
+	 * Constructeur privé enpêchant l'instantiation.
+	 * Pour accéder au singleton Historic, il faut utiliser la méthode sstatique {@link #getInstance(Context)}.
+	 * @param context
+	 */
+	private Historic(Context context) {		
 		super();
 		
 		Media media = null;
@@ -78,5 +111,31 @@ public class Historic {
 		media.setPath(result[2]);
 		media.setDescription(result[3]);
 		mediaList.add(media);
+	}
+	
+	/**
+	 * Méthode permettant d'accéder au singleton Historic	 * @param _context
+	 * @return
+	 */
+	public static Historic getInstance(Context _context) {
+		if (historicInstance == null) {
+			context = _context;
+			historicInstance = new Historic(context);
+		}
+		return historicInstance;
+	}
+	
+	/**
+	 * Renvoie le dernier {@link Media} enregistré dans l'historique.
+	 * @return
+	 */
+	public Media getLatestMedia() {
+		if (mediaList.isEmpty()) {
+			return null;
+		}
+		else {
+			Media latestMedia = mediaList.get(0);
+			return latestMedia;
+		}
 	}
 }
