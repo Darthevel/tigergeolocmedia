@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
 	private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
 	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
-	private SoundController soundController = new SoundController();
+	private SoundController soundController = new SoundController(Constants.SOUND_PREFIX, Constants.SOUND_SUFFIX, Constants.SOUND_DIRECTORY);
 	private Historic historic = null;
 
 	@Override
@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
 			historic.add(soundController.getMedia());
 		} else {
 			recordButton.setText(R.string.stopRecord);
-			soundController.startRecording();
+			soundController.record();
 			soundController.setRecording(true);
 		}
 	}
@@ -96,11 +96,11 @@ public class MainActivity extends Activity {
 	public void playSound() {
 		if (soundController.isPlaying()) {
 			playButton.setText(R.string.play);
-			soundController.stopPlaying();
+			soundController.stop();
 			soundController.setPlaying(false);
 		} else {
 			playButton.setText(R.string.stop);
-			soundController.startPlaying();
+			soundController.play();
 			soundController.setPlaying(true);
 		}
 	}
