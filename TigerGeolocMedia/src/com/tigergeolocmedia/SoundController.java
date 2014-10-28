@@ -1,10 +1,10 @@
 package com.tigergeolocmedia;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.util.Log;
 
 
@@ -15,9 +15,6 @@ import android.util.Log;
 public class SoundController extends MediaControllerBase {
 
 	private static final String LOG_TAG = "AudioRecordTest";
-	
-	private Media media = null;
-
 	private boolean isRecording = false;
 	private boolean isPlaying = false;
 
@@ -56,17 +53,32 @@ public class SoundController extends MediaControllerBase {
 
 	// Arrete l'enregistement
 	public void stopRecording() {
+		try {
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;
+		}
+		catch (Exception e) {
+			Log.e(LOG_TAG, "stopRecording() failed", e);
+		}
 	}
 
 	// Demarre l'enregistrement
 	@Override
 	public void record() {
 		media = new Media(MediaType.SOUND); //Initialiser avec AUDIO_TYPE
-		media.setName(Constants.SOUND_PREFIX + String.valueOf(System.nanoTime()));
-		media.setPath(Constants.SOUND_DIRECTORY + "/" + media.getName());
+		
+		try {
+		File file = createFile();
+		
+		media.setName(file.getName());
+		media.setPath(file.getAbsolutePath());
+		}
+		catch (IOException ioException) {
+			Log.e(LOG_TAG, "record() failed");
+
+		}
+
 
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
