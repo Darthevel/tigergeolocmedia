@@ -13,9 +13,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
- <!-- localisation GPS -->
+    <!-- localisation GPS -->
     <uses-permission android:name="android.permission.INTERNET" />
- <!-- accès internet -->
+    <!-- accès internet -->
 
     <application
         android:allowBackup="true"
@@ -34,6 +34,10 @@
         <activity
             android:name=".PersonActivity"
             android:label="@string/title_activity_person" >
+        </activity>
+        <activity
+            android:name=".HistoricActivity"
+            android:label="@string/title_activity_historic" >
         </activity>
     </application>
 

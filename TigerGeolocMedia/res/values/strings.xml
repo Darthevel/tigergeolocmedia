@@ -13,5 +13,6 @@
     <string name="takeMovie">Video</string>
     <string name="takeSound">Son</string>
     <string name="title_activity_person">PersonActivity</string>
+    <string name="title_activity_historic">HistoricActivity</string>
 
 </resources>
