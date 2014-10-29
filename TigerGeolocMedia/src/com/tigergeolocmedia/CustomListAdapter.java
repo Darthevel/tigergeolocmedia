@@ -60,7 +60,9 @@ public class CustomListAdapter extends BaseAdapter {
 		//image
 		if (m.getType() != MediaType.SOUND)
 		{
-			Bitmap myBitmap = BitmapFactory.decodeFile(m.getPath());
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 8;
+			Bitmap myBitmap = BitmapFactory.decodeFile(m.getPath(), options);
 		    image.setImageBitmap(myBitmap);		
 		}
 

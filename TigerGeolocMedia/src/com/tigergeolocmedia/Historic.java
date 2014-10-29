@@ -96,25 +96,30 @@ public class Historic {
 	public void setMedia(String info)
 	{
 		String[] result = null;
-		Media media = new Media();
 		
 		result = info.split(";");
-		media.setName(result[0]);
+		String mediaName = result[0];
+		
+		MediaType mediaType = null;
 		
 		if (result[1].equals("PICTURE"))
-			media.setType(MediaType.PICTURE);
+			mediaType = MediaType.PICTURE;
 		else if (result[1].equals("MOVIE"))
-			media.setType(MediaType.MOVIE);
+			mediaType = MediaType.MOVIE;
 		else if (result[1].equals("SOUND"))
-			media.setType(MediaType.SOUND);
+			mediaType = MediaType.SOUND;
 
-		media.setPath(result[2]);
-		media.setDescription(result[3]);
+		String mediaPath = result[2];
+		String mediaDescription = result.length == 4 ? result[3] : "";
+		
+		Media media = new Media(mediaType, mediaName, mediaPath, mediaDescription);
+		
 		mediaList.add(media);
 	}
 	
 	/**
-	 * Méthode permettant d'accéder au singleton Historic	 * @param _context
+	 * Méthode permettant d'accéder au singleton Historic
+	 * @param _context le {@link Context} de l'application.
 	 * @return
 	 */
 	public static Historic getInstance(Context _context) {

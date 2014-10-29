@@ -15,14 +15,16 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class HistoricActivity extends Activity {
 
-	ListView listView;
+	private ListView listView;
+	private Historic historic;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_historic);
 		
-		CustomListAdapter adapter = new CustomListAdapter(this, new ArrayList<Media>());
+		historic = Historic.getInstance(getApplicationContext());
+		CustomListAdapter adapter = new CustomListAdapter(this, historic.getMediaList());
 		listView.setAdapter(adapter);
 		
 			
