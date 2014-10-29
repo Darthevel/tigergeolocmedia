@@ -1,7 +1,5 @@
 package com.tigergeolocmedia;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -143,12 +141,6 @@ public class MainActivity extends ParentMenuActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
-    public void clickOnHistoric(MenuItem item)
-    {
-  	  Intent intent = new Intent(this, HistoricActivity.class);
-  	  startActivity(intent);
-    }
     
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -159,9 +151,6 @@ public class MainActivity extends ParentMenuActivity {
 		if (id == R.id.action_settings) {
 			return true;	
 		}		
-		if (id == R.id.action_historic) {
-			clickOnHistoric(item);	
-		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -236,10 +225,6 @@ public class MainActivity extends ParentMenuActivity {
 
 	private void pushToHistoric(Media media) {
 		historic.add(media);
-		
-		// Pour test
-		List<Media> mediaList = historic.getMediaList();
-		mediaList = historic.getMediaList();		
 	}
 
 	private void setMovie() {

@@ -1,19 +1,9 @@
 package com.tigergeolocmedia;
-import java.util.ArrayList;
-import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class HistoricActivity extends Activity {
+public class HistoricActivity extends ParentMenuActivity {
 
 	private ListView listView;
 	private Historic historic;
@@ -25,10 +15,12 @@ public class HistoricActivity extends Activity {
 		
 		historic = Historic.getInstance(getApplicationContext());
 		CustomListAdapter adapter = new CustomListAdapter(this, historic.getMediaList());
+
+		this.listView = (ListView) findViewById(R.id.listView);
+
 		listView.setAdapter(adapter);
 		
 			
-		this.listView = (ListView) findViewById(R.id.listView);
 		
 //			this.listView.setOnItemClickListener(new OnItemClickListener() {
 //				@Override

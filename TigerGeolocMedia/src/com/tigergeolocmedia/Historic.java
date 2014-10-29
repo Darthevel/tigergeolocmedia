@@ -82,9 +82,7 @@ public class Historic {
 	 */
 	private Historic(Context context) {		
 		super();
-		
-		Media media = null;
-		
+				
 		prefs = context.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
 		for (int i = 1; i <= 10; i++)
 		{

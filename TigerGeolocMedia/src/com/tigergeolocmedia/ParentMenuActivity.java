@@ -54,6 +54,10 @@ public class ParentMenuActivity extends Activity {
 				intent = new Intent(getApplicationContext(), PersonActivity.class);
 				startActivity(intent);
 				break;
+			case "Historique":
+				intent = new Intent(getApplicationContext(), HistoricActivity.class);
+				startActivity(intent);
+				break;
 
 			default:
 				break;

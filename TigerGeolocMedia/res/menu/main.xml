@@ -7,11 +7,4 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    
-    <item
-        android:id="@+id/action_historic"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="toto"/>
-
 </menu>
