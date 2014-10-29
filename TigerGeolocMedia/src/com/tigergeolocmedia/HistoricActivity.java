@@ -1,5 +1,10 @@
 package com.tigergeolocmedia;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -14,7 +19,11 @@ public class HistoricActivity extends ParentMenuActivity {
 		setContentView(R.layout.activity_historic);
 		
 		historic = Historic.getInstance(getApplicationContext());
-		CustomListAdapter adapter = new CustomListAdapter(this, historic.getMediaList());
+		ListElementFactory factory = new ListElementFactory(getApplicationContext());
+		Observable<HistoricElement> observable = Observable.create(factory);
+		observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+		CustomListAdapter adapter = new CustomListAdapter(this, observable);
+
 
 		this.listView = (ListView) findViewById(R.id.listView);
 
