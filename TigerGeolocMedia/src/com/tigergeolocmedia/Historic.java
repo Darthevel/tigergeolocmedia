@@ -114,7 +114,8 @@ public class Historic {
 	}
 	
 	/**
-	 * Méthode permettant d'accéder au singleton Historic	 * @param _context
+	 * Méthode permettant d'accéder au singleton Historic
+	 * @param _context le {@link Context} de l'application.
 	 * @return
 	 */
 	public static Historic getInstance(Context _context) {
