@@ -31,6 +31,14 @@ public class ParentMenuActivity extends Activity {
 		myDrawer.setOnItemClickListener(new MyDrawerItemClickListener());
 	}
 
+	
+	/**
+	 * Listen the ItemClick in the drawer to know what is clicked and start a new activity or
+	 * if the activity already exist go back to a stacked activity and put it to the front of
+	 * the task's history stack. If the called activity is the main, all activities on top of
+	 * it will be closed and this Intent will be delivered to the (now on top) old activity
+	 * as a new Intent.
+	 */
 	private class MyDrawerItemClickListener implements
 	ListView.OnItemClickListener {
 		@Override
@@ -55,7 +63,7 @@ public class ParentMenuActivity extends Activity {
 				break;
 			case "mon compte":
 				intent = new Intent(getApplicationContext(), PersonActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;
 
