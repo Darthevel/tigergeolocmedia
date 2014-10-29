@@ -1,7 +1,5 @@
 package com.tigergeolocmedia;
 
-import android.os.Environment;
-
 enum MediaType {
 	PICTURE,
 	MOVIE,
