@@ -34,10 +34,8 @@ public class PictureController extends MediaControllerBase {
 			if (pictureFile == null) {
 				return;
 			}
-			Media media = new Media(MediaType.PICTURE);
+			Media media = new Media(MediaType.PICTURE, pictureFile.getName(), pictureFile.getAbsolutePath(), "");
 			this.media = media;
-			media.setPath(pictureFile.getAbsolutePath());
-			media.setName(pictureFile.getName());
 
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			

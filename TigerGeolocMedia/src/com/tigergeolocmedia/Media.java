@@ -15,14 +15,12 @@ public class Media {
 	private String path;
 	private String description;
 	
-	public Media(MediaType type) {
+	public Media(MediaType type, String name, String path, String description) {
 		super();
 		this.type = type;
-	}
-	
-	public Media() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.name = name;
+		this.path = path;
+		this.description = description;
 	}
 
 	public String getDescription() {

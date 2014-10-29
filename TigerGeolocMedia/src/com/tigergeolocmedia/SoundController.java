@@ -66,13 +66,14 @@ public class SoundController extends MediaControllerBase {
 	// Demarre l'enregistrement
 	@Override
 	public void record() {
-		media = new Media(MediaType.SOUND); //Initialiser avec AUDIO_TYPE
 		
 		try {
 		File file = createFile();
 		
-		media.setName(file.getName());
-		media.setPath(file.getAbsolutePath());
+		// Création du media
+		media = new Media(MediaType.SOUND, file.getName(), file.getAbsolutePath(), ""); 
+
+		
 		}
 		catch (IOException ioException) {
 			Log.e(LOG_TAG, "record() failed");
