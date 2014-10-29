@@ -1,7 +1,5 @@
 package com.tigergeolocmedia;
 
-import android.os.Environment;
-
 enum MediaType {
 	PICTURE,
 	MOVIE,
@@ -18,9 +16,6 @@ public class Media {
 	public Media(MediaType type) {
 		super();
 		this.type = type;
-		this.name = String.valueOf(System.nanoTime());
-		this.path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + this.name;
-		//TODO finaliser la creation du media ==> gerer l'extension en fonction du type de fichier, et verifier le path (creation de dossier etc)
 	}
 	
 	public Media() {

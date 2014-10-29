@@ -27,7 +27,7 @@ public class PictureController extends MediaControllerBase {
 
 	@Override
 	public void record() {
-		// Cr�ation du fichier o� la photo sera sauvegard�e.
+		// Création du fichier où la photo sera sauvegardée.
 		File pictureFile = null;
 		try {
 			pictureFile = createFile();
@@ -66,13 +66,49 @@ public class PictureController extends MediaControllerBase {
 	}
 	
 	/**
-	 * Construit un {@link Bitmap} à partir du fichier image {@link #currentPicturePath}.
-	 * Si {@link #currentPicturePath} vaut <b>null</b>, le {@link Bitmap} sera <b>null</b>.
+	 * Construit un {@link Bitmap} à partir du {@link Media} courant (champ media).
+	 * Si media vaut <b>null</b> ou si ce {@link Media} est d'un autre type que PICTURE, le {@link Bitmap} 
+	 * renvoyé sera <b>null</b>.
 	 * @param targetW largeur du {@link Bitmap}. 
 	 * @param targetH hauteur du {@link Bitmap}.
 	 * @return
 	 */
+
 	public Bitmap computeCurrentBitmap(int targetW, int targetH) {
+		Bitmap bitmap = PictureController.computeBitmap(media, targetW, targetH);
+		return bitmap;
+	}
+/**
+	 * @param currentPicturePath
+	 * @return
+	 */
+	private static int computeBitmapOriendegreesInDegrees(String currentPicturePath) {
+		try {
+			ExifInterface exif = new ExifInterface(currentPicturePath);
+			int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			int bitmapOriendegreesInDegrees = exifToDegrees(exifOrientation);
+			return bitmapOriendegreesInDegrees;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	/**
+	 * 
+	 * @param exifOrientation
+	 * @return
+	 */
+	private static int exifToDegrees(int exifOrientation) {        
+	    if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; } 
+	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; } 
+	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }            
+	    return 0;    
+	 }
+
+	static public Bitmap computeBitmap(Media media, int targetW, int targetH) {
 		if (media == null) {
 			return null;
 		}
@@ -109,41 +145,11 @@ public class PictureController extends MediaControllerBase {
 		if (orientationInDegrees != 0) {
 			Matrix matrix = new Matrix();
 			matrix.preRotate(orientationInDegrees);
-			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+			int bmWidth = bitmap.getWidth();
+			int bmHeight = bitmap.getHeight();
+			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bmWidth, bmHeight, matrix, true);
 		}
 		return bitmap;
 	}
-	
-	/**
-	 * @param currentPicturePath
-	 * @return
-	 */
-	private int computeBitmapOriendegreesInDegrees(String currentPicturePath) {
-		try {
-			ExifInterface exif = new ExifInterface(currentPicturePath);
-			int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-			int bitmapOriendegreesInDegrees = exifToDegrees(exifOrientation);
-			return bitmapOriendegreesInDegrees;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	
-	/**
-	 * 
-	 * @param exifOrientation
-	 * @return
-	 */
-	private static int exifToDegrees(int exifOrientation) {        
-	    if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; } 
-	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; } 
-	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }            
-	    return 0;    
-	 }
-
-
 
 }

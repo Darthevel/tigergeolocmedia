@@ -1,23 +1,32 @@
 package com.tigergeolocmedia;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
 
-public class SoundController {
+
+/*
+ * Classe qui "controle" la creation (l'enregistrement) d'un son
+ * 
+ */
+public class SoundController extends MediaControllerBase {
 
 	private static final String LOG_TAG = "AudioRecordTest";
-	
-	private Media media = null;
-
 	private boolean isRecording = false;
 	private boolean isPlaying = false;
 
 	private MediaRecorder mRecorder = null;
 	private MediaPlayer mPlayer = null;
 	
+	
+	
+	public SoundController(String prefix, String suffix, String directory) {
+		super(prefix, suffix, directory);
+	}
+
 	public boolean isRecording() {
 		return isRecording;
 	}
@@ -37,18 +46,39 @@ public class SoundController {
 	public Media getMedia() {
 		return media;
 	}
+	
+	public void setMedia(Media media) {
+		this.media = media;
+	}
 
+	// Arrete l'enregistement
 	public void stopRecording() {
+		try {
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;
+		}
+		catch (Exception e) {
+			Log.e(LOG_TAG, "stopRecording() failed", e);
+		}
 	}
 
-	public void startRecording() {
-		media = new Media(MediaType.SOUND); //Initialiser avec AUDIO_TYPE	
+	// Demarre l'enregistrement
+	@Override
+	public void record() {
+		media = new Media(MediaType.SOUND); //Initialiser avec AUDIO_TYPE
 		
-//		mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//		mFileName += "/audiorecordtest.3gp";
+		try {
+		File file = createFile();
+		
+		media.setName(file.getName());
+		media.setPath(file.getAbsolutePath());
+		}
+		catch (IOException ioException) {
+			Log.e(LOG_TAG, "record() failed");
+
+		}
+
 
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -63,14 +93,18 @@ public class SoundController {
 			Log.e(LOG_TAG, "prepare() failed");
 		}
 	}
-
-	public void stopPlaying() {
+	
+	// Stop la lecteur (l'ecoute) du son
+	@Override
+	public void stop() {
 		mPlayer.release();
 		mPlayer = null;
 		//TODO Function pour ajouter une description ou un commentaire
 	}
 
-	public void startPlaying() {
+	// Lance la lecture (l'ecoute) du son
+	@Override
+	public void play() {
 		mPlayer = new MediaPlayer();
 		try {
 			mPlayer.setDataSource(media.getPath());
