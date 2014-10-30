@@ -2,25 +2,33 @@ package com.tigergeolocmedia;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 
 public class PictureController extends MediaControllerBase {
-	private Activity activity;
 	
+	public enum VisualEffect {
+		NONE,
+		BW, 
+		SATURATION
+	}; 
+	private Activity activity;
 
-	public PictureController(String prefix, String suffix, String directory, Activity activity) {
+	public PictureController(String prefix, String suffix, String directory,
+			Activity activity) {
 		super(prefix, suffix, directory);
 		this.activity = activity;
 	}
@@ -34,77 +42,128 @@ public class PictureController extends MediaControllerBase {
 			if (pictureFile == null) {
 				return;
 			}
-			Media media = new Media(MediaType.PICTURE, pictureFile.getName(), pictureFile.getAbsolutePath(), "");
+			Media media = new Media(MediaType.PICTURE, pictureFile.getName(),
+					pictureFile.getAbsolutePath(), "");
 			this.media = media;
 
-			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			
-			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(pictureFile));
-			
-			activity.startActivityForResult(takePictureIntent, Constants.ACTION_TAKE_PICTURE);
+			Intent takePictureIntent = new Intent(
+					MediaStore.ACTION_IMAGE_CAPTURE);
+
+			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+					Uri.fromFile(pictureFile));
+
+			activity.startActivityForResult(takePictureIntent,
+					Constants.ACTION_TAKE_PICTURE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-
-
 
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
-	 * Construit un {@link Bitmap} à partir du {@link Media} courant (champ media).
-	 * Si media vaut <b>null</b> ou si ce {@link Media} est d'un autre type que PICTURE, le {@link Bitmap} 
-	 * renvoyé sera <b>null</b>.
-	 * @param targetW largeur du {@link Bitmap}. 
-	 * @param targetH hauteur du {@link Bitmap}.
+	 * Construit un {@link Bitmap} à partir du {@link Media} courant (champ
+	 * media). Si media vaut <b>null</b> ou si ce {@link Media} est d'un autre
+	 * type que PICTURE, le {@link Bitmap} renvoyé sera <b>null</b>.
+	 * 
+	 * @param targetW
+	 *            largeur du {@link Bitmap}.
+	 * @param targetH
+	 *            hauteur du {@link Bitmap}.
 	 * @return
 	 */
 
 	public Bitmap computeCurrentBitmap(int targetW, int targetH) {
-		Bitmap bitmap = PictureController.computeBitmap(media, targetW, targetH);
+		Bitmap bitmap = PictureController
+				.computeBitmap(media, targetW, targetH);
 		return bitmap;
 	}
-/**
+
+	/**
 	 * @param currentPicturePath
 	 * @return
 	 */
-	private static int computeBitmapOriendegreesInDegrees(String currentPicturePath) {
+	private static int computeBitmapOriendegreesInDegrees(
+			String currentPicturePath) {
 		try {
 			ExifInterface exif = new ExifInterface(currentPicturePath);
-			int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			int exifOrientation = exif.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
 			int bitmapOriendegreesInDegrees = exifToDegrees(exifOrientation);
 			return bitmapOriendegreesInDegrees;
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * 
 	 * @param exifOrientation
 	 * @return
 	 */
-	private static int exifToDegrees(int exifOrientation) {        
-	    if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; } 
-	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; } 
-	    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }            
-	    return 0;    
-	 }
+	private static int exifToDegrees(int exifOrientation) {
+		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+			return 90;
+		} else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+			return 180;
+		} else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+			return 270;
+		}
+		return 0;
+	}
+
+	static public Bitmap computeBitmapWithSaturationEffect(Media media, int targetW,
+			int targetH, float saturation) {
+		Bitmap bitmap = computeBitmap(media, targetW, targetH);
+		bitmap = computeBitmapWithSaturationEffect(bitmap, saturation);
+		return bitmap;
+	}
+
+	static public Bitmap computeBitmapWithBWEffect(Media media, int targetW,
+			int targetH) {
+		Bitmap bitmap = computeBitmap(media, targetW, targetH);
+		bitmap = computeBitmapWithBWEffect(bitmap);
+		return bitmap;
+	}
+
+	static public Bitmap computeBitmapWithBWEffect(Bitmap source) {
+		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
+				source.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmpMonochrome);
+		ColorMatrix ma = new ColorMatrix();
+		ma.setSaturation(0);
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(ma));
+		canvas.drawBitmap(source, 0, 0, paint);
+		return bmpMonochrome;
+	}
+	
+	static public Bitmap computeBitmapWithSaturationEffect(Bitmap source, float saturation) {
+		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
+				source.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmpMonochrome);
+		ColorMatrix ma = new ColorMatrix();
+		ma.setSaturation(saturation);
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(ma));
+		canvas.drawBitmap(source, 0, 0, paint);
+		return bmpMonochrome;
+	}
 
 	static public Bitmap computeBitmap(Media media, int targetW, int targetH) {
 		if (media == null) {
@@ -112,7 +171,7 @@ public class PictureController extends MediaControllerBase {
 		}
 		int photoW = 0;
 		int photoH = 0;
-		
+
 		/* Get the size of the image */
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 		bmOptions.inJustDecodeBounds = true;
@@ -120,15 +179,14 @@ public class PictureController extends MediaControllerBase {
 		photoW = bmOptions.outWidth;
 		photoH = bmOptions.outHeight;
 
- 		// Get the bitmap's EXIF orientation
-		int orientationInDegrees = computeBitmapOriendegreesInDegrees(media.getPath());
-		
+		// Get the bitmap's EXIF orientation
+		int orientationInDegrees = computeBitmapOriendegreesInDegrees(media
+				.getPath());
 
-		
 		/* Figure out which way needs to be reduced less */
 		int scaleFactor = 1;
 		if ((targetW > 0) || (targetH > 0)) {
-			scaleFactor = Math.min(photoW/targetW, photoH/targetH);	
+			scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 		}
 
 		/* Set bitmap options to scale the image decode target */
@@ -138,16 +196,52 @@ public class PictureController extends MediaControllerBase {
 
 		/* Decode the JPEG file into a Bitmap */
 		Bitmap bitmap = BitmapFactory.decodeFile(media.getPath(), bmOptions);
-		
-		
+
 		if (orientationInDegrees != 0) {
 			Matrix matrix = new Matrix();
 			matrix.preRotate(orientationInDegrees);
 			int bmWidth = bitmap.getWidth();
 			int bmHeight = bitmap.getHeight();
-			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bmWidth, bmHeight, matrix, true);
+			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bmWidth, bmHeight,
+					matrix, true);
 		}
 		return bitmap;
 	}
+
+	public static final Parcelable.Creator<PictureController> CREATOR = new Parcelable.Creator<PictureController>() {
+
+		@Override
+		public PictureController createFromParcel(Parcel source) {
+
+			String prefix = source.readString();
+			String suffix = source.readString();
+			String directory = source.readString();
+
+			PictureController pictureController = new PictureController(prefix,
+					suffix, directory, null);
+
+			String type = source.readString();
+
+			if (type != null) {
+				String name = source.readString();
+				String path = source.readString();
+				String description = source.readString();
+
+				Media media = new Media(MediaType.PICTURE, name, path,
+						description);
+				pictureController.setMedia(media);
+			}
+
+			// TODO Auto-generated method stub
+			return pictureController;
+		}
+
+		@Override
+		public PictureController[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	};
 
 }

@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public abstract class MediaControllerBase implements MediaController { 
+public abstract class MediaControllerBase implements MediaController, Parcelable { 
 	
 	protected String prefix;
 	protected String suffix;
@@ -76,6 +78,23 @@ public abstract class MediaControllerBase implements MediaController {
 	public void setMedia(Media media) {
 		this.media = media;
 	}
+	
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(prefix);
+        dest.writeString(suffix);
+        dest.writeString(directory);
+        if (media != null) {
+        	media.writeToParcel(dest, flags);
+        }
+	}
+	
 	
 	
 

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.tigergeolocmedia.util.Registry;
 
 /**
  * Activity principale de l'application.
@@ -181,11 +182,12 @@ public class MainActivity extends ParentMenuActivity {
 
 	private void handlePicture() {
 
-		if (pictureController.getMedia() != null) {
-			setPic();
-			pushToHistoric(pictureController.getMedia());
-			pictureController.setMedia(null);
-		}
+//		if (pictureController.getMedia() != null) {
+//			setPic();
+//			pushToHistoric(pictureController.getMedia());
+//			pictureController.setMedia(null);
+//		}
+		startPictureActivity();
 	}
 
 	private void setPic() {
@@ -218,11 +220,12 @@ public class MainActivity extends ParentMenuActivity {
 	
 	private void handleMovie() {
 
-		if (movieController.getMedia() != null) {
-			setMovie();
-			pushToHistoric(movieController.getMedia());
-			movieController.setMedia(null);
-		}
+//		if (movieController.getMedia() != null) {
+//			setMovie();
+//			pushToHistoric(movieController.getMedia());
+//			movieController.setMedia(null);
+//		}
+		startMovieActivity();
 	}
 
 	private void pushToHistoric(Media media) {
@@ -243,6 +246,10 @@ public class MainActivity extends ParentMenuActivity {
 		// TODO Auto-generated method stub
 		super.onRestoreInstanceState(savedInstanceState);
 		initial = savedInstanceState.getBoolean(INITIAL_KEY);
+		
+		
+		pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+
 	}
 	
 	
@@ -277,8 +284,27 @@ public class MainActivity extends ParentMenuActivity {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 		outState.putBoolean(INITIAL_KEY, false);
+		
+		Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
+
 	}
 	
-	
+	private void startPictureActivity() {
+		if (pictureController.getMedia() != null) {
+			Intent intent = new Intent(this, PictureActivity.class);
+			intent.putExtra(Constants.PICTURE_CONTROLLER_PARCELABLE, pictureController);
+			startActivity(intent);
+		}
+	}
+
+	private void startMovieActivity() {
+		if (movieController.getMedia() != null) {
+			Intent intent = new Intent(this, MovieActivity.class);
+			intent.putExtra(Constants.MOVIE_CONTROLLER_PARCELABLE, movieController);
+			startActivity(intent);
+		}
+	}
+
+
 
 }

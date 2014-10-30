@@ -16,6 +16,16 @@
     <!-- localisation GPS -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- accès internet -->
+    
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    
+
+    <!-- Network State Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    
 
     <application
         android:allowBackup="true"
@@ -38,6 +48,18 @@
         <activity
             android:name=".HistoricActivity"
             android:label="@string/title_activity_historic" >
+        </activity>
+        <activity
+            android:name=".PictureActivity"
+            android:label="@string/title_activity_picture" >
+        </activity>
+        <activity
+            android:name=".MovieActivity"
+            android:label="@string/title_activity_movie" >
+        </activity>
+        <activity
+            android:name=".MediaActivity"
+            android:label="@string/title_activity_media" >
         </activity>
     </application>
 

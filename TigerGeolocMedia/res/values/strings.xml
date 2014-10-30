@@ -15,10 +15,15 @@
     <string name="title_activity_person">PersonActivity</string>
     <string name="title_activity_historic">HistoricActivity</string>
 
-   	<string-array name="items">
+    <string-array name="items">
         <item>Capturer un media</item>
         <item>les médias autour de moi</item>
         <item>les medias de ceux que je suis</item>
         <item>mon compte</item>
     </string-array>
+
+    <string name="title_activity_picture">PictureActivity</string>
+    <string name="title_activity_movie">MovieActivity</string>
+    <string name="title_activity_media">MediaActivity</string>
+
 </resources>

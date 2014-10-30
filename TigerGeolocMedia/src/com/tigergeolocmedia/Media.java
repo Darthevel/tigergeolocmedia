@@ -1,6 +1,7 @@
 package com.tigergeolocmedia;
 
-import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 enum MediaType {
 	PICTURE,
@@ -8,7 +9,7 @@ enum MediaType {
 	SOUND
 };
 
-public class Media {
+public class Media implements Parcelable{
 	
 	private MediaType type;
 	private String name;
@@ -53,5 +54,19 @@ public class Media {
 	
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+    	dest.writeString(this.getType().toString());
+    	dest.writeString(this.getName());
+    	dest.writeString(this.getPath());
+    	dest.writeString(this.getDescription());
 	}
 }
