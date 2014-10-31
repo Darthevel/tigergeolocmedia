@@ -68,6 +68,7 @@ public class ParentMenuActivity extends Activity {
 				break;
 			case "Historique":
 				intent = new Intent(getApplicationContext(), HistoricActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;
 
