@@ -1,5 +1,8 @@
 package com.tigergeolocmedia;
 
+import rx.android.observables.ViewObservable;
+import rx.functions.Action1;
+
 import com.tigergeolocmedia.PictureController.VisualEffect;
 
 import android.content.Intent;
@@ -80,6 +83,8 @@ public class PictureActivity extends ParentMenuActivity {
 				
 			}
 		});
+		
+		ViewObservable.clicks(imageViewVisualEffect1
 		
 		editTextDescription = (EditText) findViewById(R.id.editTextDescription);
 		
