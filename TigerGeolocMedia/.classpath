@@ -6,6 +6,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/rxjava-1.0.0-rc.8.jar"/>
-	<classpathentry kind="lib" path="libs/rxjava-android-0.20.6.jar"/>
+	<classpathentry kind="lib" path="libs/rxandroid-0.22.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
