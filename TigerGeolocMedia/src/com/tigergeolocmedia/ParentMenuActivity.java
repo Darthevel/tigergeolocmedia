@@ -1,5 +1,8 @@
 package com.tigergeolocmedia;
 
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ParentMenuActivity extends Activity {
 
@@ -76,6 +80,19 @@ public class ParentMenuActivity extends Activity {
 				break;
 			}
 			
+			Observable.just(clickedItem)
+				.map(new Func1<String, String>() {
+					@Override
+					public String call(String message) {
+						return "Vous avez cliquer sur : "+message;
+					}
+				})
+				.subscribe(new Action1<String>(){
+				@Override
+				public void call(String message) {
+					toastMessage(message);
+				}
+			});
 			drawerLayout.closeDrawer(myDrawer);
 		}
 	}
@@ -84,6 +101,10 @@ public class ParentMenuActivity extends Activity {
 	public void setContentView(final int layoutResID) {
 		FrameLayout item = (FrameLayout) findViewById(R.id.content_frame);
     	getLayoutInflater().inflate(layoutResID, item);
+	}
+	
+	private void toastMessage(String message) {
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 
 }
