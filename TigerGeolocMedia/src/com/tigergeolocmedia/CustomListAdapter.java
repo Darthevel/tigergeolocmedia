@@ -55,7 +55,7 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		ImageView image = (ImageView) convertView.findViewById(R.id.image);
 		TextView title = (TextView) convertView.findViewById(R.id.title);
 		TextView type = (TextView) convertView.findViewById(R.id.mediaType);
-		TextView description = (TextView) convertView.findViewById(R.id.genre);
+		TextView description = (TextView) convertView.findViewById(R.id.description);
 //		TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
 
 		// getting historic data for the row
@@ -72,9 +72,7 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		
 		// Description
 		description.setText(element.getDescription());
-		
-		this.notifyDataSetChanged();
-		
+				
 //		// release year
 //		year.setText(String.valueOf(m.getYear()));
 
