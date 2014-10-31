@@ -1,5 +1,12 @@
 package com.tigergeolocmedia;
 
+import com.tigergeolocmedia.util.Registry;
+
+/**
+ * @author HumanBooster
+ * @deprecated Utiliser {@link Registry}
+ *
+ */
 public class GlobalRegister {
 	
 	private static GlobalRegister instance;

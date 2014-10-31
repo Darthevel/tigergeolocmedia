@@ -220,12 +220,12 @@ public class MainActivity extends ParentMenuActivity {
 	
 	private void handleMovie() {
 
-//		if (movieController.getMedia() != null) {
-//			setMovie();
-//			pushToHistoric(movieController.getMedia());
-//			movieController.setMedia(null);
-//		}
-		startMovieActivity();
+		if (movieController.getMedia() != null) {
+			setMovie();
+			pushToHistoric(movieController.getMedia());
+			movieController.setMedia(null);
+		}
+// 		startMovieActivity();
 	}
 
 	private void pushToHistoric(Media media) {

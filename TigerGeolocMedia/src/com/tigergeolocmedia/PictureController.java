@@ -244,4 +244,11 @@ public class PictureController extends MediaControllerBase {
 
 	};
 
+	public void save(Historic historic) {
+		if (media != null) {
+			historic.add(media);
+		}
+		
+	}
+
 }

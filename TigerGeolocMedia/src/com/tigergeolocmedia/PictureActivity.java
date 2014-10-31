@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class PictureActivity extends ParentMenuActivity {
@@ -32,6 +33,8 @@ public class PictureActivity extends ParentMenuActivity {
 	private ImageView imageViewVisualEffectBW;
 	private ImageView imageViewVisualEffect1;
 	private ImageView imageViewVisualEffectNone;
+	
+	private EditText editTextDescription;
 	
 	
 
@@ -78,6 +81,8 @@ public class PictureActivity extends ParentMenuActivity {
 			}
 		});
 		
+		editTextDescription = (EditText) findViewById(R.id.editTextDescription);
+		
 		
 	}
 
@@ -115,9 +120,37 @@ public class PictureActivity extends ParentMenuActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		if (id == R.id.itemSaveAndSend) {
+			saveAndSend();
+			return true;
+		}
+		if (id == R.id.action_settings) {
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 	
+	private void saveAndSend() {
+		// Sauvegarde du media
+		save();
+		
+		// Envoi du media
+		send();
+		
+	}
+
+	private void send() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void save() {
+		Media media = controller.getMedia();
+		media.setDescription(editTextDescription.getText().toString());
+		controller.save(historic);
+		
+	}
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onWindowFocusChanged(boolean)
 	 */
