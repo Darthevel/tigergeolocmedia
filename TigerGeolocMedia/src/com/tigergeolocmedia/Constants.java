@@ -17,6 +17,10 @@ public class Constants {
 	public final static String MOVIE_SUFFIX = MP4_FILE_SUFFIX;
 	public final static String SOUND_SUFFIX = GP3_FILE_SUFFIX;
 	public final static String TIME_STAMP_FORMAT = "yyyyMMdd_HHmmss";
+	public static final String PICTURE_CONTROLLER_PARCELABLE = "PICTURE_CONTROLLER_PARCELABLE";
+	public static final String MOVIE_CONTROLLER_PARCELABLE = "MOVIE_CONTROLLER_PARCELABLE";
+	
+	public final static String PICTURE_CONTROLLER = "PICTURE_CONTROLLER";
 
 
 }

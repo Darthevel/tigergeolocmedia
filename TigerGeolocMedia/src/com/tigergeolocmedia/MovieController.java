@@ -6,6 +6,8 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 
 public class MovieController extends MediaControllerBase {
@@ -52,6 +54,44 @@ public class MovieController extends MediaControllerBase {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public static final Parcelable.Creator<MovieController> CREATOR = new Parcelable.Creator<MovieController>() {
+
+		@Override
+		public MovieController createFromParcel(Parcel source) {
+			
+	        String prefix = source.readString();
+	        String suffix = source.readString();
+	        String directory = source.readString();
+	        
+
+	        MovieController controller = new MovieController(prefix, suffix, directory, null);
+	        
+	        String type = source.readString();
+	        
+	        if (type != null) {
+	        	String name = source.readString();
+	        	String path = source.readString();
+	        	String description = source.readString();
+	        	
+	        	Media media = new Media(MediaType.PICTURE, name, path, description);
+	        	controller.setMedia(media);
+	        }
+
+			return controller;
+		}
+
+		@Override
+		public MovieController[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	};
+
+
+
 	
 
 }
