@@ -28,5 +28,9 @@
     <string name="title_activity_media">MediaActivity</string>
     <string name="picture_description">Contient la photo qu\'on vient de prendre</string>
     <string name="description_hint">Description</string>
-    
+    <string name="title_activity_sound">SoundActivity</string>
+    <string name="send">Save and Send</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

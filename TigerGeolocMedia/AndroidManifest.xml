@@ -16,16 +16,13 @@
     <!-- localisation GPS -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- accès internet -->
-    
+
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    
 
     <!-- Network State Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
-    
 
     <application
         android:allowBackup="true"
@@ -60,6 +57,14 @@
         <activity
             android:name=".MediaActivity"
             android:label="@string/title_activity_media" >
+        </activity>
+        <activity
+            android:name=".SoundActivity"
+            android:label="@string/title_activity_sound"
+            android:parentActivityName=".ParentMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tigergeolocmedia.ParentMenuActivity" />
         </activity>
     </application>
 

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import com.tigergeolocmedia.util.Registry;
 
 /**
@@ -23,7 +24,6 @@ public class MainActivity extends ParentMenuActivity {
 	private ImageView pictureView;
 	
 	private Button recordButton = null;
-	private Button playButton = null;
 	
 	private static String INITIAL_KEY = "INITIAL_KEY";
 	/**
@@ -43,11 +43,7 @@ public class MainActivity extends ParentMenuActivity {
 	 * Contrôleur de video.
 	 */
 	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
-	
-	/**
-	 * Contrôleur de son.
-	 */
-	private SoundController soundController = new SoundController(Constants.SOUND_PREFIX, Constants.SOUND_SUFFIX, Constants.SOUND_DIRECTORY);
+
 	private Historic historic = null;
 
 	@Override
@@ -83,46 +79,13 @@ public class MainActivity extends ParentMenuActivity {
 
 			@Override
 			public void onClick(View v) {
-				record();
-			}
-
-		});
-
-		playButton = (Button) findViewById(R.id.playButton);
-		playButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				playSound();
+				Intent intent = new Intent(getApplicationContext(), SoundActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
 			}
 
 		});
 		pictureView = (ImageView) findViewById(R.id.pictureView);
-	}
-
-	public void record() {
-		if (soundController.isRecording()) {
-			recordButton.setText(R.string.record);
-			soundController.stopRecording();
-			soundController.setRecording(false);
-			historic.add(soundController.getMedia());
-		} else {
-			recordButton.setText(R.string.stopRecord);
-			soundController.record();
-			soundController.setRecording(true);
-		}
-	}
-
-	public void playSound() {
-		if (soundController.isPlaying()) {
-			playButton.setText(R.string.play);
-			soundController.stop();
-			soundController.setPlaying(false);
-		} else {
-			playButton.setText(R.string.stop);
-			soundController.play();
-			soundController.setPlaying(true);
-		}
 	}
 
 	protected void takeMovie() {
@@ -186,20 +149,6 @@ public class MainActivity extends ParentMenuActivity {
 //			pictureController.setMedia(null);
 //		}
 		startPictureActivity();
-	}
-
-	private void setPic() {
-		/* There isn't enough memory to open up more than a couple camera photos */
-		/* So pre-scale the target bitmap into which the file is decoded */
-
-		/* Get the size of the ImageView */
-		int targetW = pictureView.getWidth();
-		int targetH = pictureView.getHeight();
-		
-		Bitmap currentBitmap = pictureController.computeCurrentBitmap(targetW, targetH);
-		
-		/* Associate the Bitmap to the ImageView */
-		pictureView.setImageBitmap(currentBitmap);
 	}
 	
 	private void setPic(Media media) {

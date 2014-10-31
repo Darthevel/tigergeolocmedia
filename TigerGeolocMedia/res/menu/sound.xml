@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tigergeolocmedia.SoundActivity" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+    
+    <item 
+        android:id="@+id/itemSaveSound" 
+        android:showAsAction="always" 
+        android:titleCondensed="SA" 
+        android:title="@string/save" 
+        android:visible="false" />
+    
+    <item 
+        android:id="@+id/itemSaveAndSendSound" 
+        android:showAsAction="always" 
+        android:titleCondensed="Send" 
+        android:title="@string/send" />
+    
+    <item 
+        android:id="@+id/itemCancelSound" 
+        android:showAsAction="always" 
+        android:titleCondensed="Cancel" 
+        android:title="@string/cancel" />
+
+</menu>
