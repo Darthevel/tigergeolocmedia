@@ -1,7 +1,5 @@
 package com.tigergeolocmedia;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -144,7 +142,7 @@ public class MainActivity extends ParentMenuActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -152,8 +150,8 @@ public class MainActivity extends ParentMenuActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			return true;
-		}
+			return true;	
+		}		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -230,10 +228,6 @@ public class MainActivity extends ParentMenuActivity {
 
 	private void pushToHistoric(Media media) {
 		historic.add(media);
-		
-		// Pour test
-		List<Media> mediaList = historic.getMediaList();
-		mediaList = historic.getMediaList();		
 	}
 
 	private void setMovie() {

@@ -1,32 +1,33 @@
 package com.tigergeolocmedia;
-import java.util.ArrayList;
-import java.util.List;
 
-import android.app.Activity;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class HistoricActivity extends Activity {
+public class HistoricActivity extends ParentMenuActivity {
 
-	ListView listView;
+	private ListView listView;
+	private Historic historic;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_historic);
 		
-		CustomListAdapter adapter = new CustomListAdapter(this, new ArrayList<Media>());
+		historic = Historic.getInstance(getApplicationContext());
+		ListElementFactory factory = new ListElementFactory(getApplicationContext());
+		Observable<HistoricElement> observable = Observable.create(factory);
+		observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+		CustomListAdapter adapter = new CustomListAdapter(this, observable);
+
+
+		this.listView = (ListView) findViewById(R.id.listView);
+
 		listView.setAdapter(adapter);
 		
 			
-		this.listView = (ListView) findViewById(R.id.listView);
 		
 //			this.listView.setOnItemClickListener(new OnItemClickListener() {
 //				@Override
