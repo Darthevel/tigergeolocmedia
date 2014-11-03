@@ -21,6 +21,9 @@ public class Constants {
 	public static final String MOVIE_CONTROLLER_PARCELABLE = "MOVIE_CONTROLLER_PARCELABLE";
 	
 	public final static String PICTURE_CONTROLLER = "PICTURE_CONTROLLER";
+	
+	public final static String MOVIE_URI = "MOVIE_URI";
 
+	public static final String VIDEO_STORAGE_KEY = "VIDEO_STORAGE_KEY";
 
 }

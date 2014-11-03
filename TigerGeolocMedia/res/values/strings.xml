@@ -29,4 +29,16 @@
     <string name="picture_description">Contient la photo qu\'on vient de prendre</string>
     <string name="description_hint">Description</string>
     
+    
+    <string name="menu_save_picture">Sauver</string>
+    <string name="menu_save_picture_condensed">SA</string>
+    
+    <string name="menu_send_picture">Envoyer</string>
+    <string name="menu_send_picture_condensed">ENV</string>
+    
+    <string name="menu_cancel_picture">Annuler</string>
+    <string name="menu_cancel_picture_condensed">ANN</string>
+    
+    
+    
 </resources>

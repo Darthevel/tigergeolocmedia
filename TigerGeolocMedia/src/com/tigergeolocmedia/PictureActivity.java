@@ -1,5 +1,9 @@
 package com.tigergeolocmedia;
 
+import rx.android.events.OnClickEvent;
+import rx.android.observables.ViewObservable;
+import rx.functions.Action1;
+
 import com.tigergeolocmedia.PictureController.VisualEffect;
 
 import android.content.Intent;
@@ -14,6 +18,11 @@ import android.widget.ImageView;
 public class PictureActivity extends ParentMenuActivity {
 	
 	private static final String VISUAL_EFFECT_KEY = "VISUAL_EFFECT_KEY";
+	
+	
+	/**
+	 * Saturation par défaut : une valeur de 2.0f donne une image très saturée.
+	 */
 	private static final float SATURATION = 2.0f;
 
 	
@@ -31,7 +40,7 @@ public class PictureActivity extends ParentMenuActivity {
 	private ImageView pictureView;
 	
 	private ImageView imageViewVisualEffectBW;
-	private ImageView imageViewVisualEffect1;
+	private ImageView imageViewVisualEffectSaturation;
 	private ImageView imageViewVisualEffectNone;
 	
 	private EditText editTextDescription;
@@ -51,41 +60,52 @@ public class PictureActivity extends ParentMenuActivity {
 		this.controller = controller;
 		pictureView = (ImageView) findViewById(R.id.pictureViewPicture);
 		
+		// Effet NONE (l'image initiale reste à l'identique) début
 		imageViewVisualEffectNone = (ImageView) findViewById(R.id.imageViewVisualEffectNone);
-		imageViewVisualEffectNone.setOnClickListener(new View.OnClickListener() {
-			
+		ViewObservable.clicks(imageViewVisualEffectNone).subscribe(new Action1<OnClickEvent>() {
+
 			@Override
-			public void onClick(View v) {
+			public void call(OnClickEvent arg0) {
 				applyVisualEffectNONE();
 				
 			}
 		});
+		// Effet NONE (l'image initiale reste à l'identique) fin
 
-		
+		// Effet BW début
 		imageViewVisualEffectBW = (ImageView) findViewById(R.id.imageViewVisualEffectBW);
-		imageViewVisualEffectBW.setOnClickListener(new View.OnClickListener() {
-			
+		ViewObservable.clicks(imageViewVisualEffectBW).subscribe(new Action1<OnClickEvent>() {
+
 			@Override
-			public void onClick(View v) {
+			public void call(OnClickEvent arg0) {
 				applyVisualEffectBW();
 				
 			}
 		});
-		imageViewVisualEffect1 = (ImageView) findViewById(R.id.imageViewVisualEffect1);
-		imageViewVisualEffect1.setOnClickListener(new View.OnClickListener() {
-			
+
+		// Effet BW fin
+		
+		// Effet SATURATION Début
+		imageViewVisualEffectSaturation = (ImageView) findViewById(R.id.imageViewVisualEffectSaturation);
+		ViewObservable.clicks(imageViewVisualEffectSaturation).subscribe(new Action1<OnClickEvent>() {
+
 			@Override
-			public void onClick(View v) {
+			public void call(OnClickEvent arg0) {
 				applyVisualEffectsaturation(SATURATION);
 				
 			}
 		});
+		
+		// Effet SATURATION Fin
 		
 		editTextDescription = (EditText) findViewById(R.id.editTextDescription);
 		
 		
 	}
 
+	protected void applyVisualEffectsaturation() {
+		applyVisualEffectsaturation(SATURATION);
+	}
 	protected void applyVisualEffectsaturation(float saturation) {
 		visualEffect = VisualEffect.SATURATION;
 		Bitmap bwBitmap = PictureController.computeBitmapWithSaturationEffect(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight(), saturation);
@@ -124,12 +144,22 @@ public class PictureActivity extends ParentMenuActivity {
 			saveAndSend();
 			return true;
 		}
-		if (id == R.id.action_settings) {
+		if (id == R.id.itemSave) {
+			save();
+			return true;
+		}
+		if (id == R.id.itemCancel) {
+			cancel();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
+	private void cancel() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void saveAndSend() {
 		// Sauvegarde du media
 		save();
@@ -143,10 +173,35 @@ public class PictureActivity extends ParentMenuActivity {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private Bitmap computeCurrentBitmap() {
+		Bitmap bitmap = PictureController.computeBitmap(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight());
+		
+		if (visualEffect.equals(VisualEffect.BW)) {
+			bitmap = PictureController.computeBitmapWithBWEffect(bitmap);
+		}
+		else if (pictureView.equals(VisualEffect.SATURATION)) {
+			bitmap = PictureController.computeBitmapWithSaturationEffect(bitmap, SATURATION);
+		}
+		return bitmap;
+
+	}
 
 	private void save() {
+		// Récuoération du media
 		Media media = controller.getMedia();
+		
+		// On colle la description dans le media.
 		media.setDescription(editTextDescription.getText().toString());
+		
+		// Récup du bitmap courant
+		Bitmap currentBitmap = computeCurrentBitmap();
+		
+		// On sauve l'image (avec l'effet).
+		controller.save(media, currentBitmap);
+		
+		
+		// On sauve l'historique
 		controller.save(historic);
 		
 	}
@@ -193,12 +248,13 @@ public class PictureActivity extends ParentMenuActivity {
 		/* Associate the Bitmap to the ImageView */
 		imageView.setImageBitmap(bitmap);
 	}
+	
 
 	private void setPic(Media media) {
 		
 		setPic(media, pictureView, visualEffect);
 		setPic(media, imageViewVisualEffectBW, VisualEffect.BW);
-		setPic(media, imageViewVisualEffect1, VisualEffect.SATURATION);
+		setPic(media, imageViewVisualEffectSaturation, VisualEffect.SATURATION);
 		setPic(media, imageViewVisualEffectNone, VisualEffect.NONE);
 	}
 	

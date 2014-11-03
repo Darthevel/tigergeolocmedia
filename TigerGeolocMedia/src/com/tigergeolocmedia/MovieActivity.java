@@ -1,13 +1,18 @@
 package com.tigergeolocmedia;
 
+import java.io.File;
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.VideoView;
 
 public class MovieActivity extends ParentMenuActivity {
 	
 	private MovieController controller;
+	private VideoView videoViewVideo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -15,8 +20,21 @@ public class MovieActivity extends ParentMenuActivity {
 		setContentView(R.layout.activity_movie);
 		
 		Intent intent = getIntent();
+		
+		
+
 		MovieController controller = intent.getParcelableExtra(Constants.MOVIE_CONTROLLER_PARCELABLE);
+		
+		File movieFile = new File(controller.getMedia().getPath());
+		boolean exists = movieFile.exists();
+		
 		this.controller = controller;
+		
+		videoViewVideo = (VideoView) findViewById(R.id.videoViewVideo);
+		Uri videoUri = Uri.fromFile(movieFile);
+		videoUri = intent.getParcelableExtra(Constants.MOVIE_URI);
+		videoViewVideo.setVideoURI(videoUri);
+
 	}
 
 	@Override

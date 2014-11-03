@@ -29,7 +29,7 @@
             android:src="@drawable/ic_launcher" />
         
         <ImageView
-            android:id="@+id/imageViewVisualEffect1"
+            android:id="@+id/imageViewVisualEffectSaturation"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentRight="true"

@@ -1,6 +1,8 @@
 package com.tigergeolocmedia;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
@@ -14,17 +16,17 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 
 public class PictureController extends MediaControllerBase {
-	
+
 	public enum VisualEffect {
-		NONE,
-		BW, 
-		SATURATION
-	}; 
+		NONE, BW, SATURATION
+	};
+
 	private Activity activity;
 
 	public PictureController(String prefix, String suffix, String directory,
@@ -127,8 +129,8 @@ public class PictureController extends MediaControllerBase {
 		return 0;
 	}
 
-	static public Bitmap computeBitmapWithSaturationEffect(Media media, int targetW,
-			int targetH, float saturation) {
+	static public Bitmap computeBitmapWithSaturationEffect(Media media,
+			int targetW, int targetH, float saturation) {
 		Bitmap bitmap = computeBitmap(media, targetW, targetH);
 		bitmap = computeBitmapWithSaturationEffect(bitmap, saturation);
 		return bitmap;
@@ -152,8 +154,9 @@ public class PictureController extends MediaControllerBase {
 		canvas.drawBitmap(source, 0, 0, paint);
 		return bmpMonochrome;
 	}
-	
-	static public Bitmap computeBitmapWithSaturationEffect(Bitmap source, float saturation) {
+
+	static public Bitmap computeBitmapWithSaturationEffect(Bitmap source,
+			float saturation) {
 		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
 				source.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmpMonochrome);
@@ -248,7 +251,29 @@ public class PictureController extends MediaControllerBase {
 		if (media != null) {
 			historic.add(media);
 		}
-		
+
+	}
+
+	public void save(Media media, Bitmap bitmap) {
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+
+		// you can create a new file name "test.jpg" in sdcard folder.
+		File f = new File(media.getPath());
+		// write the bytes in file
+
+		try {
+			FileOutputStream fo = new FileOutputStream(f);
+			fo.write(bytes.toByteArray());
+
+			// remember close de FileOutput
+			fo.close();
+		}
+
+		catch (Exception exception) {
+			exception.printStackTrace();
+
+		}
 	}
 
 }

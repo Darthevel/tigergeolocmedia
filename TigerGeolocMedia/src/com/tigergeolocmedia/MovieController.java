@@ -32,11 +32,11 @@ public class MovieController extends MediaControllerBase {
 			}
 			Media media = new Media(MediaType.MOVIE, file.getName(), file.getAbsolutePath(), "");
 			this.media = media;
-			Intent takePictureIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			
-			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+			// takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 			
-			activity.startActivityForResult(takePictureIntent, Constants.ACTION_TAKE_MOVIE);
+			activity.startActivityForResult(takeVideoIntent, Constants.ACTION_TAKE_MOVIE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,7 +75,7 @@ public class MovieController extends MediaControllerBase {
 	        	String path = source.readString();
 	        	String description = source.readString();
 	        	
-	        	Media media = new Media(MediaType.PICTURE, name, path, description);
+	        	Media media = new Media(MediaType.MOVIE, name, path, description);
 	        	controller.setMedia(media);
 	        }
 

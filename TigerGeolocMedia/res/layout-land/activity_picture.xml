@@ -24,6 +24,7 @@
             android:id="@+id/imageViewVisualEffectNone"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="50dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
@@ -31,9 +32,10 @@
             android:src="@drawable/ic_launcher" />
 
         <ImageView
-            android:id="@+id/imageViewVisualEffect1"
+            android:id="@+id/imageViewVisualEffectSaturation"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
@@ -44,6 +46,7 @@
             android:id="@+id/imageViewVisualEffectBW"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="50dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
