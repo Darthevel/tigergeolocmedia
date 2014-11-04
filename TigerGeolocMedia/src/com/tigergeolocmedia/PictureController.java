@@ -16,7 +16,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -194,6 +193,7 @@ public class PictureController extends MediaControllerBase {
 				scaleFactor = 8;
 			}
 		}
+		scaleFactor = 8;
 
 		/* Set bitmap options to scale the image decode target */
 		bmOptions.inJustDecodeBounds = false;
