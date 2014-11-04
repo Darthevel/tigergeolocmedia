@@ -86,9 +86,9 @@ public class PictureController extends MediaControllerBase {
 	 * @return
 	 */
 
-	public Bitmap computeCurrentBitmap(int targetW, int targetH) {
+	public Bitmap computeCurrentBitmap(int targetW, int targetH, boolean manageScaleFactor) {
 		Bitmap bitmap = PictureController
-				.computeBitmap(media, targetW, targetH);
+				.computeBitmap(media, targetW, targetH, manageScaleFactor);
 		return bitmap;
 	}
 
@@ -130,20 +130,20 @@ public class PictureController extends MediaControllerBase {
 	}
 
 	static public Bitmap computeBitmapWithSaturationEffect(Media media,
-			int targetW, int targetH, float saturation) {
-		Bitmap bitmap = computeBitmap(media, targetW, targetH);
-		bitmap = computeBitmapWithSaturationEffect(bitmap, saturation);
+			int targetW, int targetH, float saturation, boolean manageScaleFactor) {
+		Bitmap bitmap = computeBitmap(media, targetW, targetH, manageScaleFactor);
+		bitmap = computeBitmapWithSaturationEffect(bitmap, saturation, manageScaleFactor);
 		return bitmap;
 	}
 
 	static public Bitmap computeBitmapWithBWEffect(Media media, int targetW,
-			int targetH) {
-		Bitmap bitmap = computeBitmap(media, targetW, targetH);
-		bitmap = computeBitmapWithBWEffect(bitmap);
+			int targetH, boolean manageScaleFactor) {
+		Bitmap bitmap = computeBitmap(media, targetW, targetH, manageScaleFactor);
+		bitmap = computeBitmapWithBWEffect(bitmap, manageScaleFactor);
 		return bitmap;
 	}
 
-	static public Bitmap computeBitmapWithBWEffect(Bitmap source) {
+	static public Bitmap computeBitmapWithBWEffect(Bitmap source, boolean manageScaleFactor) {
 		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
 				source.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmpMonochrome);
@@ -156,7 +156,7 @@ public class PictureController extends MediaControllerBase {
 	}
 
 	static public Bitmap computeBitmapWithSaturationEffect(Bitmap source,
-			float saturation) {
+			float saturation, boolean manageScaleFactor) {
 		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
 				source.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmpMonochrome);
@@ -168,7 +168,7 @@ public class PictureController extends MediaControllerBase {
 		return bmpMonochrome;
 	}
 
-	static public Bitmap computeBitmap(Media media, int targetW, int targetH) {
+	static public Bitmap computeBitmap(Media media, int targetW, int targetH, boolean manageScaleFactor) {
 		if (media == null) {
 			return null;
 		}
@@ -188,8 +188,11 @@ public class PictureController extends MediaControllerBase {
 
 		/* Figure out which way needs to be reduced less */
 		int scaleFactor = 1;
-		if ((targetW > 0) || (targetH > 0)) {
+		if (((targetW > 0) || (targetH > 0)) && manageScaleFactor) {
 			scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+			if (scaleFactor < 8) {
+				scaleFactor = 8;
+			}
 		}
 
 		/* Set bitmap options to scale the image decode target */
@@ -199,6 +202,7 @@ public class PictureController extends MediaControllerBase {
 
 		/* Decode the JPEG file into a Bitmap */
 		Bitmap bitmap = BitmapFactory.decodeFile(media.getPath(), bmOptions);
+		int byteCount = bitmap.getByteCount();
 
 		if (orientationInDegrees != 0) {
 			Matrix matrix = new Matrix();

@@ -65,22 +65,17 @@ public class SoundController extends MediaControllerBase {
 
 	// Demarre l'enregistrement
 	@Override
-	public void record() {
-		
+	public void record() {	
 		try {
 		File file = createFile();
 		
 		// Création du media
-		media = new Media(MediaType.SOUND, file.getName(), file.getAbsolutePath(), ""); 
-
-		
+		media = new Media(MediaType.SOUND, file.getName(), file.getAbsolutePath(), ""); 	
 		}
 		catch (IOException ioException) {
 			Log.e(LOG_TAG, "record() failed");
 
 		}
-
-
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -93,6 +88,10 @@ public class SoundController extends MediaControllerBase {
 		} catch (IOException e) {
 			Log.e(LOG_TAG, "prepare() failed");
 		}
+	}
+	
+	public void setDescription(String description){
+		media.setDescription(description);
 	}
 	
 	// Stop la lecteur (l'ecoute) du son

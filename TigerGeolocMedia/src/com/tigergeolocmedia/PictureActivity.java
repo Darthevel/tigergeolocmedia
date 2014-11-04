@@ -66,7 +66,7 @@ public class PictureActivity extends ParentMenuActivity {
 
 			@Override
 			public void call(OnClickEvent arg0) {
-				applyVisualEffectNONE();
+				applyVisualEffectNONE(true);
 				
 			}
 		});
@@ -78,7 +78,7 @@ public class PictureActivity extends ParentMenuActivity {
 
 			@Override
 			public void call(OnClickEvent arg0) {
-				applyVisualEffectBW();
+				applyVisualEffectBW(true);
 				
 			}
 		});
@@ -91,7 +91,7 @@ public class PictureActivity extends ParentMenuActivity {
 
 			@Override
 			public void call(OnClickEvent arg0) {
-				applyVisualEffectsaturation(SATURATION);
+				applyVisualEffectsaturation(SATURATION, true);
 				
 			}
 		});
@@ -103,24 +103,24 @@ public class PictureActivity extends ParentMenuActivity {
 		
 	}
 
-	protected void applyVisualEffectsaturation() {
-		applyVisualEffectsaturation(SATURATION);
+	protected void applyVisualEffectsaturation(boolean manageScaleFactor) {
+		applyVisualEffectsaturation(SATURATION, manageScaleFactor);
 	}
-	protected void applyVisualEffectsaturation(float saturation) {
+	protected void applyVisualEffectsaturation(float saturation, boolean manageScaleFactor) {
 		visualEffect = VisualEffect.SATURATION;
-		Bitmap bwBitmap = PictureController.computeBitmapWithSaturationEffect(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight(), saturation);
+		Bitmap bwBitmap = PictureController.computeBitmapWithSaturationEffect(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight(), saturation, manageScaleFactor);
 		pictureView.setImageBitmap(bwBitmap);
 	}
 
-	protected void applyVisualEffectNONE() {
+	protected void applyVisualEffectNONE(boolean manageScaleFactor) {
 		visualEffect = VisualEffect.NONE;
-		Bitmap bwBitmap = PictureController.computeBitmap(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight());
+		Bitmap bwBitmap = PictureController.computeBitmap(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight(), manageScaleFactor);
 		pictureView.setImageBitmap(bwBitmap);
 	}
 
-	protected void applyVisualEffectBW() {
+	protected void applyVisualEffectBW(boolean manageScaleFactor) {
 		visualEffect = VisualEffect.BW;
-		Bitmap bwBitmap = PictureController.computeBitmapWithBWEffect(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight());
+		Bitmap bwBitmap = PictureController.computeBitmapWithBWEffect(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight(), manageScaleFactor);
 		pictureView.setImageBitmap(bwBitmap);
 	}
 
@@ -175,13 +175,13 @@ public class PictureActivity extends ParentMenuActivity {
 	}
 	
 	private Bitmap computeCurrentBitmap() {
-		Bitmap bitmap = PictureController.computeBitmap(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight());
+		Bitmap bitmap = PictureController.computeBitmap(controller.getMedia(), pictureView.getWidth(), pictureView.getHeight(), false);
 		
 		if (visualEffect.equals(VisualEffect.BW)) {
-			bitmap = PictureController.computeBitmapWithBWEffect(bitmap);
+			bitmap = PictureController.computeBitmapWithBWEffect(bitmap, false);
 		}
-		else if (pictureView.equals(VisualEffect.SATURATION)) {
-			bitmap = PictureController.computeBitmapWithSaturationEffect(bitmap, SATURATION);
+		else if (visualEffect.equals(VisualEffect.SATURATION)) {
+			bitmap = PictureController.computeBitmapWithSaturationEffect(bitmap, SATURATION, false);
 		}
 		return bitmap;
 
@@ -228,7 +228,7 @@ public class PictureActivity extends ParentMenuActivity {
 		
 	}
 	
-	private static void setPic(Media media, ImageView imageView, VisualEffect effect) {
+	private static void setPic(Media media, ImageView imageView, VisualEffect effect, boolean manageScaleFactor) {
 		/* There isn't enough memory to open up more than a couple camera photos */
 		/* So pre-scale the target bitmap into which the file is decoded */
 
@@ -236,13 +236,13 @@ public class PictureActivity extends ParentMenuActivity {
 		int targetW = imageView.getWidth();
 		int targetH = imageView.getHeight();
 		
-		Bitmap bitmap = PictureController.computeBitmap(media, targetW, targetH);
+		Bitmap bitmap = PictureController.computeBitmap(media, targetW, targetH, manageScaleFactor);
 		
 		if (effect.equals(VisualEffect.BW)) {
-			bitmap = PictureController.computeBitmapWithBWEffect(bitmap);
+			bitmap = PictureController.computeBitmapWithBWEffect(bitmap, manageScaleFactor);
 		}
 		else if (effect.equals(VisualEffect.SATURATION)) {
-			bitmap = PictureController.computeBitmapWithSaturationEffect(bitmap, SATURATION);
+			bitmap = PictureController.computeBitmapWithSaturationEffect(bitmap, SATURATION, manageScaleFactor);
 		}
 		
 		/* Associate the Bitmap to the ImageView */
@@ -252,10 +252,10 @@ public class PictureActivity extends ParentMenuActivity {
 
 	private void setPic(Media media) {
 		
-		setPic(media, pictureView, visualEffect);
-		setPic(media, imageViewVisualEffectBW, VisualEffect.BW);
-		setPic(media, imageViewVisualEffectSaturation, VisualEffect.SATURATION);
-		setPic(media, imageViewVisualEffectNone, VisualEffect.NONE);
+		setPic(media, pictureView, visualEffect, true);
+		setPic(media, imageViewVisualEffectBW, VisualEffect.BW, true);
+		setPic(media, imageViewVisualEffectSaturation, VisualEffect.SATURATION, true);
+		setPic(media, imageViewVisualEffectNone, VisualEffect.NONE, true);
 	}
 	
 	

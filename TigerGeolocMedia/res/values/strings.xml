@@ -28,8 +28,8 @@
     <string name="title_activity_media">MediaActivity</string>
     <string name="picture_description">Contient la photo qu\'on vient de prendre</string>
     <string name="description_hint">Description</string>
-    
-    
+
+    <string name="title_activity_sound">SoundActivity</string>
     <string name="menu_save_picture">Sauver</string>
     <string name="menu_save_picture_condensed">SA</string>
     
@@ -39,6 +39,9 @@
     <string name="menu_cancel_picture">Annuler</string>
     <string name="menu_cancel_picture_condensed">ANN</string>
     
+    <string name="save">Sauver</string>
+    <string name="send">Envoyer</string>
+    <string name="cancel">Annuler</string>
     
-    
+
 </resources>
