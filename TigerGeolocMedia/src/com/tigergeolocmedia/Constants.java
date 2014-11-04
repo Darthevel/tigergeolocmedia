@@ -20,6 +20,8 @@ public class Constants {
 	public static final String PICTURE_CONTROLLER_PARCELABLE = "PICTURE_CONTROLLER_PARCELABLE";
 	public static final String MOVIE_CONTROLLER_PARCELABLE = "MOVIE_CONTROLLER_PARCELABLE";
 	
+	public static final String MY_PREFS_NAME = "MyPrefsFile";
+	
 	public final static String PICTURE_CONTROLLER = "PICTURE_CONTROLLER";
 
 

@@ -7,5 +7,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/rxjava-1.0.0-rc.8.jar"/>
 	<classpathentry kind="lib" path="libs/rxandroid-0.22.0.jar"/>
+	<classpathentry kind="lib" path="libs/retrofit-1.7.1.jar"/>
+	<classpathentry kind="lib" path="libs/gson-2.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

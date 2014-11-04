@@ -5,31 +5,25 @@ import java.util.List;
 
 public class Person {
 
-	private String firstName;
-	private String lastName;
+	private String username;
 	private String password;
 	private String email;
-	private String login;
 	private int id;
 	private List<Person> followers = new ArrayList<Person>();
-	private List<Person> followed = new ArrayList<Person>();
+	private List<Person> following = new ArrayList<Person>();
 	
 	public Person() {
 		super();
 	}
 	
-	public String getFirstName() {
-		return firstName;
+	public String getUsername() {
+		return username;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+	public void setUsername(String userName) {
+		this.username = userName;
 	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -42,12 +36,7 @@ public class Person {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
+
 	public int getId() {
 		return id;
 	}
@@ -60,10 +49,10 @@ public class Person {
 	public void setFollowers(List<Person> followers) {
 		this.followers = followers;
 	}
-	public List<Person> getFollowed() {
-		return followed;
+	public List<Person> getFollowing() {
+		return following;
 	}
-	public void setFollowed(List<Person> followed) {
-		this.followed = followed;
+	public void setFollowing(List<Person> followed) {
+		this.following = followed;
 	}
 }

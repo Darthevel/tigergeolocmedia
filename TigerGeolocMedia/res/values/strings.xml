@@ -32,5 +32,7 @@
     <string name="send">Save and Send</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
 
 </resources>
