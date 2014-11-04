@@ -29,10 +29,9 @@ public class Historic {
 	private static Context context;
 
 	public static final int MAX_LENGTH = 10;
-	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	
-	String historicKey = "historic";
-	SharedPreferences prefs = null;
+	private String historicKey = "historic";
+	private SharedPreferences prefs = null;
 
 	private List<Media> mediaList = new ArrayList<Media>(MAX_LENGTH);
 
@@ -83,7 +82,7 @@ public class Historic {
 	private Historic(Context context) {		
 		super();
 				
-		prefs = context.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
+		prefs = context.getSharedPreferences(Constants.MY_PREFS_NAME, Context.MODE_PRIVATE);
 		for (int i = 1; i <= 10; i++)
 		{
 			if (prefs.contains(historicKey + i))

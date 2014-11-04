@@ -5,11 +5,9 @@ import java.util.List;
 
 public class Person {
 
-	private String firstName;
-	private String lastName;
+	private String login;
 	private String password;
 	private String email;
-	private String login;
 	private int id;
 	private List<Person> followerList = new ArrayList<Person>();
 	private List<Person> followingList = new ArrayList<Person>();
@@ -21,18 +19,17 @@ public class Person {
 		super();
 	}
 	
-	public String getFirstName() {
-		return firstName;
+
+	public String getLogin() {
+		return login;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+
+
 	public String getPassword() {
 		return password;
 	}
@@ -45,12 +42,7 @@ public class Person {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
+
 	public int getId() {
 		return id;
 	}

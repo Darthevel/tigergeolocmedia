@@ -30,6 +30,7 @@
     <string name="description_hint">Description</string>
 
     <string name="title_activity_sound">SoundActivity</string>
+
     <string name="menu_save_picture">Sauver</string>
     <string name="menu_save_picture_condensed">SA</string>
     
@@ -43,5 +44,6 @@
     <string name="send">Envoyer</string>
     <string name="cancel">Annuler</string>
     
-
+    <string name="username">Username</string>
+    <string name="email">Email</string>
 </resources>
