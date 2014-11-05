@@ -10,6 +10,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 
+import com.tigergeolocmedia.Media.MediaType;
+
 public class MovieController extends MediaControllerBase {
 	private Activity activity;
 	

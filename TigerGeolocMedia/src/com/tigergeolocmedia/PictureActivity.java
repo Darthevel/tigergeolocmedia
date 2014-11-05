@@ -1,7 +1,5 @@
 package com.tigergeolocmedia;
 
-import com.tigergeolocmedia.PictureController.VisualEffect;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.tigergeolocmedia.Media.MediaType;
+import com.tigergeolocmedia.PictureController.VisualEffect;
 
 public class PictureActivity extends ParentMenuActivity {
 	
@@ -147,7 +148,8 @@ public class PictureActivity extends ParentMenuActivity {
 	private void save() {
 		Media media = controller.getMedia();
 		media.setDescription(editTextDescription.getText().toString());
-		controller.save(historic);
+		historic.add(controller.getMedia());
+		//controller.save(historic);
 		
 	}
 

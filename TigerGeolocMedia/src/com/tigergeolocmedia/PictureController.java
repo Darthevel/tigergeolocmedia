@@ -18,6 +18,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 
+import com.tigergeolocmedia.Media.MediaType;
+
 public class PictureController extends MediaControllerBase {
 	
 	public enum VisualEffect {
