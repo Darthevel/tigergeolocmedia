@@ -81,6 +81,11 @@ public class ParentMenuActivity extends Activity {
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;
+			case "Map":
+				intent = new Intent(getApplicationContext(), MapActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
+				break;
 
 			default:
 				break;

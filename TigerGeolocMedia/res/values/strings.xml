@@ -21,29 +21,26 @@
         <item>les medias de ceux que je suis</item>
         <item>mon compte</item>
         <item>Historique</item>
-    </string-array>
+        <item>Map</item>
+        </string-array>
 
     <string name="title_activity_picture">PictureActivity</string>
     <string name="title_activity_movie">MovieActivity</string>
     <string name="title_activity_media">MediaActivity</string>
     <string name="picture_description">Contient la photo qu\'on vient de prendre</string>
     <string name="description_hint">Description</string>
-
     <string name="title_activity_sound">SoundActivity</string>
-
     <string name="menu_save_picture">Sauver</string>
     <string name="menu_save_picture_condensed">SA</string>
-    
     <string name="menu_send_picture">Envoyer</string>
     <string name="menu_send_picture_condensed">ENV</string>
-    
     <string name="menu_cancel_picture">Annuler</string>
     <string name="menu_cancel_picture_condensed">ANN</string>
-    
     <string name="save">Sauver</string>
     <string name="send">Envoyer</string>
     <string name="cancel">Annuler</string>
-    
     <string name="username">Username</string>
     <string name="email">Email</string>
+    <string name="title_activity_map">MapActivity</string>
+
 </resources>

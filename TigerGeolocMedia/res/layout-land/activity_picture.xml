@@ -14,7 +14,7 @@
         android:layout_width="298dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/picture_description"
-        android:src="@drawable/ic_launcher" />
+         />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_launcher" />
+             />
 
         <ImageView
             android:id="@+id/imageViewVisualEffectSaturation"
@@ -40,7 +40,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:src="@drawable/ic_launcher" />
+             />
 
         <ImageView
             android:id="@+id/imageViewVisualEffectBW"
@@ -50,7 +50,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_launcher" />
+             />
 
         <EditText
             android:id="@+id/editTextDescription"

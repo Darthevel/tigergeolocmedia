@@ -20,8 +20,7 @@ public class MovieController extends MediaControllerBase {
 		this.activity = activity;
 	}
 
-	@Override
-	public void record() {
+	public void recordOLD() {
 		// Cr�ation du fichier o� la photo sera sauvegard�e.
 		File file = null;
 		try {
@@ -43,6 +42,31 @@ public class MovieController extends MediaControllerBase {
 		}
 	}
 
+	@Override
+	public void record() {
+		// Cr�ation du fichier o� la photo sera sauvegard�e.
+		File file = null;
+		try {
+			// file = createMovieFile();
+			file = createFile();
+			if (file == null) {
+				return;
+			}
+			Media media = new Media(MediaType.MOVIE, file.getName(), file.getAbsolutePath(), "");
+			this.media = media;
+			Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			
+			takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+			// set the video image quality to high
+		    takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); 
+
+			
+			activity.startActivityForResult(takeVideoIntent, Constants.ACTION_TAKE_MOVIE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub

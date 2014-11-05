@@ -1,5 +1,7 @@
 package com.tigergeolocmedia;
 
+import java.io.File;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -96,7 +98,6 @@ public class MainActivity extends ParentMenuActivity {
 
 	protected void takeMovie() {
 		movieController.record();
-
 	}
 
 	protected void takePicture() {
@@ -138,7 +139,7 @@ public class MainActivity extends ParentMenuActivity {
 		// 
 		case Constants.ACTION_TAKE_MOVIE: {
 			if (resultCode == RESULT_OK) {
-				handleMovie(data);
+				handleMovie();
 			}
 			break;
 		} // ACTION_TAKE_MOVIE
@@ -171,14 +172,14 @@ public class MainActivity extends ParentMenuActivity {
 		pictureView.setImageBitmap(currentBitmap);
 	}
 	
-	private void handleMovie(Intent data) {
+	private void handleMovie() {
 
 //		if (movieController.getMedia() != null) {
 //			setMovie();
 //			pushToHistoric(movieController.getMedia());
 //			movieController.setMedia(null);
 //		}
- 		startMovieActivity(data);
+ 		startMovieActivity();
 	}
 
 	private void pushToHistoric(Media media) {
@@ -248,12 +249,15 @@ public class MainActivity extends ParentMenuActivity {
 		}
 	}
 
-	private void startMovieActivity(Intent data) {
+	private void startMovieActivity() {
 		if (movieController.getMedia() != null) {
 			
-			videoURI = data.getData();
+			
+			File movieFile = new File(movieController.getMedia().getPath());
+			
+			videoURI = Uri.fromFile(movieFile);
 
-			Intent intent = new Intent(this, MovieActivity.class);
+			Intent intent = new Intent(this, VideoViewActivity.class);
 			
 			intent.putExtra(Constants.MOVIE_CONTROLLER_PARCELABLE, movieController);
 			intent.putExtra(Constants.MOVIE_URI, videoURI);
