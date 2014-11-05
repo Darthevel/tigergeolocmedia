@@ -21,6 +21,7 @@
         <item>les medias de ceux que je suis</item>
         <item>mon compte</item>
         <item>Historique</item>
+        <item>MapMicke</item>
     </string-array>
 
     <string name="title_activity_picture">PictureActivity</string>
@@ -32,5 +33,7 @@
     <string name="send">Save and Send</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="title_activity_historic_bdd">HistoricBDDActivity</string>
+    <string name="title_activity_map_micke">MapMickeActivity</string>
 
 </resources>
