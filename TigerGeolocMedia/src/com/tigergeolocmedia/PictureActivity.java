@@ -214,9 +214,11 @@ public class PictureActivity extends ParentMenuActivity {
 
 	}
 
+	/**
+	 * Envoi de l'image sur le serveur.
+	 */
 	private void send() {
-		// TODO Auto-generated method stub
-
+		// TODO : implémenter cette fonctionnalité.
 	}
 
 	private Bitmap computeCurrentBitmap() {

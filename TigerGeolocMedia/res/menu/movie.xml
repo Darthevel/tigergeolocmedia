@@ -6,6 +6,25 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        android:visible="false"/>
 
+    <item
+        android:id="@+id/itemSave"
+        android:showAsAction="always"
+        android:title="@string/menu_save_movie"
+        android:titleCondensed="@string/menu_save_movie_condensed">
+    </item>
+    <item
+        android:id="@+id/itemSaveAndSend"
+        android:showAsAction="always"
+        android:title="@string/menu_send_movie"
+        android:titleCondensed="@string/menu_send_movie_condensed">
+    </item>
+    <item
+        android:id="@+id/itemCancel"
+        android:showAsAction="always"
+        android:title="@string/menu_cancel_movie"
+        android:titleCondensed="@string/menu_cancel_movie_condensed">
+    </item>
 </menu>
