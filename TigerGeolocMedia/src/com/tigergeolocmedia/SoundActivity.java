@@ -1,6 +1,8 @@
 package com.tigergeolocmedia;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +67,12 @@ public class SoundActivity extends ParentMenuActivity {
 			soundController.stopRecording();
 			soundController.setRecording(false);
 			playButton.setEnabled(true);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
+			if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			else
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			recordButton.setText(R.string.stopRecord);
 			soundController.record();
 			soundController.setRecording(true);
@@ -84,7 +91,12 @@ public class SoundActivity extends ParentMenuActivity {
 			playButton.setText(R.string.play);
 			soundController.stop();
 			soundController.setPlaying(false);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
+			if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			else
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			playButton.setText(R.string.stop);
 			soundController.play();
 			soundController.setPlaying(true);
@@ -117,10 +129,14 @@ public class SoundActivity extends ParentMenuActivity {
 				.setRecording(savedInstanceState.getBoolean("recording"));
 		soundController.setPlaying(savedInstanceState.getBoolean("playing"));
 
-		soundController.setMedia(new Media(MediaType.SOUND, savedInstanceState
-				.getString("mediaName"), savedInstanceState
-				.getString("mediaPath"), savedInstanceState
-				.getString("mediaDescription")));
+		if (savedInstanceState.containsKey("mediaName"))
+		{
+			soundController.setMedia(new Media(MediaType.SOUND, 
+					savedInstanceState.getString("mediaName"), 
+					savedInstanceState.getString("mediaPath"), 
+					savedInstanceState.getString("mediaDescription")));
+			playButton.setEnabled(true);
+		}
 
 		description.setText(savedInstanceState.getString("description"));
 
@@ -147,14 +163,13 @@ public class SoundActivity extends ParentMenuActivity {
 		outState.putBoolean("recording", soundController.isRecording());
 		outState.putBoolean("playing", soundController.isPlaying());
 		if (soundController.getMedia() != null) {
-			outState.putString("mediaName", soundController.getMedia()
-					.getName());
-			outState.putString("mediaPath", soundController.getMedia()
-					.getPath());
-			outState.putString("mediaDescription", soundController.getMedia()
-					.getDescription());
+			outState.putString("mediaName", 
+					soundController.getMedia().getName());
+			outState.putString("mediaPath", 
+					soundController.getMedia().getPath());
+			outState.putString("mediaDescription", 
+					soundController.getMedia().getDescription());
 		}
-
 		outState.putString("description", description.getText().toString());
 	}
 
