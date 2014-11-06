@@ -53,7 +53,7 @@ public class MovieController extends MediaControllerBase {
 				return;
 			}
 			Media media = new Media(MediaType.MOVIE, file.getName(), file.getAbsolutePath(), "");
-			this.media = media;
+			setMedia(media);
 			Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			
 			takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
