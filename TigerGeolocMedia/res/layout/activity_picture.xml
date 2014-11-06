@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,13 +12,18 @@
     <ImageView
         android:id="@+id/pictureViewPicture"
         android:layout_width="match_parent"
-        android:layout_height="264dp" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/relativeLayout1" />
+
 
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:layout_marginTop="40dp"
-        android:layout_weight="0.00" >
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editTextDescription"
+        android:layout_alignLeft="@+id/editTextDescription"
+        android:layout_marginBottom="15dp">
 
         <ImageView
             android:id="@+id/imageViewVisualEffectNone"
@@ -44,12 +49,11 @@
     <EditText
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:ems="10"
-        android:hint="@string/description_hint" >
-
-        <requestFocus />
-    </EditText>
-
-</LinearLayout>
+        android:hint="@string/description_hint" />
+    
+</RelativeLayout>

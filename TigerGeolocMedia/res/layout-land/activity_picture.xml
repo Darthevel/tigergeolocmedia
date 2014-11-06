@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,12 +13,18 @@
         android:id="@+id/pictureViewPicture"
         android:layout_width="298dp"
         android:layout_height="match_parent"
-        android:contentDescription="@string/picture_description"
-         />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/picture_description" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/pictureViewPicture" >
 
         <ImageView
             android:id="@+id/imageViewVisualEffectNone"
@@ -66,4 +72,4 @@
         </EditText>
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
