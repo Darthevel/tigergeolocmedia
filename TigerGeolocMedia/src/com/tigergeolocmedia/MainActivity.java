@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.util.Registry;
 
 /**

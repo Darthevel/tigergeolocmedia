@@ -1,20 +1,15 @@
 package com.tigergeolocmedia;
 
-
 import java.util.List;
-
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

@@ -1,5 +1,6 @@
 package com.tigergeolocmedia;
 
+
 import rx.android.events.OnClickEvent;
 import rx.android.observables.ViewObservable;
 import rx.functions.Action1;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.PictureController.VisualEffect;
 
 public class PictureActivity extends ParentMenuActivity {
@@ -242,6 +244,7 @@ public class PictureActivity extends ParentMenuActivity {
 		// On colle la description dans le media.
 		media.setDescription(editTextDescription.getText().toString());
 
+
 		// Récup du bitmap courant
 		Bitmap currentBitmap = computeCurrentBitmap();
 
@@ -250,6 +253,8 @@ public class PictureActivity extends ParentMenuActivity {
 
 		// On sauve l'historique
 		controller.save(historic);
+
+		historic.add(controller.getMedia());
 
 	}
 

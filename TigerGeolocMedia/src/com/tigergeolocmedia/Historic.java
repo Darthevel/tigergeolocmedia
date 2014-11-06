@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.widget.Toast;
 
+import com.tigergeolocmedia.Media.MediaType;
+
 /**
  * 
  * Gestion de l'historique Media

@@ -1,10 +1,12 @@
 package com.tigergeolocmedia;
 
+
+import rx.Observable;
+import rx.Subscriber;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import rx.Observable;
-import rx.Subscriber;
+
 
 public class ListElementFactory implements Observable.OnSubscribe<HistoricElement>{
 

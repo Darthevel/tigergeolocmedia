@@ -50,5 +50,7 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_historic_bdd">HistoricBDDActivity</string>
+
 
 </resources>

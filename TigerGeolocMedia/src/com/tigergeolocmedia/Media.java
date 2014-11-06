@@ -3,14 +3,14 @@ package com.tigergeolocmedia;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-enum MediaType {
-	PICTURE,
-	MOVIE,
-	SOUND
-};
-
 public class Media implements Parcelable{
 	
+	public enum MediaType {
+		PICTURE,
+		MOVIE,
+		SOUND
+	}
+
 	private MediaType type;
 	private String name;
 	private String path;

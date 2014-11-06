@@ -2,6 +2,8 @@ package com.tigergeolocmedia;
 
 import java.io.File;
 
+import com.tigergeolocmedia.Media.MediaType;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;

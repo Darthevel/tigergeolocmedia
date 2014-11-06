@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import com.tigergeolocmedia.Media.MediaType;
+
 
 public class MovieController extends MediaControllerBase {
 	private Activity activity;
@@ -19,6 +21,7 @@ public class MovieController extends MediaControllerBase {
 		super(prefix, suffix, directory);
 		this.activity = activity;
 	}
+
 
 	public void recordOLD() {
 		// Cr�ation du fichier o� la photo sera sauvegard�e.
@@ -42,6 +45,7 @@ public class MovieController extends MediaControllerBase {
 		}
 	}
 
+
 	@Override
 	public void record() {
 		// Cr�ation du fichier o� la photo sera sauvegard�e.
@@ -59,7 +63,6 @@ public class MovieController extends MediaControllerBase {
 			takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 			// set the video image quality to high
 		    takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); 
-
 			
 			activity.startActivityForResult(takeVideoIntent, Constants.ACTION_TAKE_MOVIE);
 		} catch (IOException e) {
@@ -67,6 +70,7 @@ public class MovieController extends MediaControllerBase {
 			e.printStackTrace();
 		}
 	}
+	
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
@@ -114,17 +118,11 @@ public class MovieController extends MediaControllerBase {
 		
 	};
 
-
-
 	public void save(Historic historic) {
 		if (media != null) {
 			historic.add(media);
 		}
 
 	}
-
-
-
-	
 
 }
