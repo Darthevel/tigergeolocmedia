@@ -55,33 +55,34 @@ public class ParentMenuActivity extends Activity {
 		public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
 			String clickedItem = (String) adapter.getAdapter().getItem(pos);
 			Intent intent;
-			switch (clickedItem) {
-			case "Capturer un media":
+			
+			switch (pos) {
+			case 0:
 				intent = new Intent(getApplicationContext(), MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				break;
-			case "les médias autour de moi":
+			case 1:
 				intent = new Intent(getApplicationContext(), MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				break;
-			case "les medias de ceux que je suis":
+			case 2:
 				intent = new Intent(getApplicationContext(), MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				break;
-			case "mon compte":
+			case 3:
 				intent = new Intent(getApplicationContext(), PersonActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;
-			case "Historique":
+			case 4:
 				intent = new Intent(getApplicationContext(), HistoricActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;
-			case "Map":
+			case 5:
 				intent = new Intent(getApplicationContext(), MapActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
