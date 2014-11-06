@@ -146,6 +146,8 @@ public class MapActivity extends ParentMenuActivity {
 
 	private void addMarker(LatLng coordinate, String title, String snippet) {
 		nbMarker++;
+		
+		title = "(" + nbMarker + ")" + title;
 		Marker marker = googleMap.addMarker(new MarkerOptions()
 				.position(coordinate).title(title).draggable(false));
 
