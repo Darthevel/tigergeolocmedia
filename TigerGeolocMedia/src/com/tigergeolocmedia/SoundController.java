@@ -7,22 +7,19 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
 
-
 /*
  * Classe qui "controle" la creation (l'enregistrement) d'un son
  * 
  */
 public class SoundController extends MediaControllerBase {
 
-	private static final String LOG_TAG = "AudioRecordTest";
+	private static final String LOG_TAG = "SoundController";
 	private boolean isRecording = false;
 	private boolean isPlaying = false;
 
 	private MediaRecorder mRecorder = null;
 	private MediaPlayer mPlayer = null;
-	
-	
-	
+
 	public SoundController(String prefix, String suffix, String directory) {
 		super(prefix, suffix, directory);
 	}
@@ -46,60 +43,63 @@ public class SoundController extends MediaControllerBase {
 	public Media getMedia() {
 		return media;
 	}
-	
+
 	public void setMedia(Media media) {
 		this.media = media;
+	}
+
+	public void setDescription(String description) {
+		media.setDescription(description);
 	}
 
 	// Arrete l'enregistement
 	public void stopRecording() {
 		try {
-		mRecorder.stop();
-		mRecorder.release();
-		mRecorder = null;
-		}
-		catch (Exception e) {
+			if (mRecorder != null) {
+				mRecorder.stop();
+				mRecorder.release();
+				mRecorder = null;
+			}
+		} catch (Exception e) {
 			Log.e(LOG_TAG, "stopRecording() failed", e);
 		}
 	}
 
 	// Demarre l'enregistrement
 	@Override
-	public void record() {	
+	public void record() {
 		try {
-		File file = createFile();
-		
-		// Création du media
-		media = new Media(MediaType.SOUND, file.getName(), file.getAbsolutePath(), ""); 	
-		}
-		catch (IOException ioException) {
-			Log.e(LOG_TAG, "record() failed");
+			File file = createFile();
 
+			// Création du media
+			media = new Media(MediaType.SOUND, file.getName(),
+					file.getAbsolutePath(), "");
+		} catch (IOException ioException) {
+			Log.e(LOG_TAG, "File / Media creation failed");
 		}
+		// Creation du MediaRecorder, initialisation de ses parametre (Source de
+		// l'enregistrement, format du fichier, localisation du fichier, type
+		// d'encodage)
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 		mRecorder.setOutputFile(media.getPath());
 		mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
+		// Demarrage de l'enregistrement
 		try {
 			mRecorder.prepare();
 			mRecorder.start();
 		} catch (IOException e) {
-			Log.e(LOG_TAG, "prepare() failed");
+			Log.e(LOG_TAG, "Start recording failed");
 		}
 	}
-	
-	public void setDescription(String description){
-		media.setDescription(description);
-	}
-	
-	// Stop la lecteur (l'ecoute) du son
+
+	// Stop la lecture (l'ecoute) du son
 	@Override
 	public void stop() {
 		mPlayer.release();
 		mPlayer = null;
-		//TODO Function pour ajouter une description ou un commentaire
 	}
 
 	// Lance la lecture (l'ecoute) du son
@@ -111,7 +111,7 @@ public class SoundController extends MediaControllerBase {
 			mPlayer.prepare();
 			mPlayer.start();
 		} catch (IOException e) {
-			Log.e(LOG_TAG, "prepare() failed");
+			Log.e(LOG_TAG, "play() failed");
 		}
 	}
 }
