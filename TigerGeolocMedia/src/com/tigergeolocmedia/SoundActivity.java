@@ -1,7 +1,5 @@
 package com.tigergeolocmedia;
 
-import java.io.File;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,13 +18,17 @@ public class SoundActivity extends ParentMenuActivity {
 	/**
 	 * Contrôleur de son.
 	 */
-	private SoundController soundController = new SoundController(Constants.SOUND_PREFIX, Constants.SOUND_SUFFIX, Constants.SOUND_DIRECTORY);
-	
+	private SoundController soundController = new SoundController(
+			Constants.SOUND_PREFIX, Constants.SOUND_SUFFIX,
+			Constants.SOUND_DIRECTORY);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sound);
-		
+
+		// Initialisation des bouttons et champs de l'activité
+		// Recuperation de l'historique pour pouvoir stoquer tout nouveaux sons
 		historic = Historic.getInstance(getApplicationContext());
 		recordButton = (Button) findViewById(R.id.recordButton);
 		recordButton.setOnClickListener(new View.OnClickListener() {
@@ -43,13 +45,20 @@ public class SoundActivity extends ParentMenuActivity {
 				playSound();
 			}
 		});
-//		File file = new File(soundController.media.getPath());
-//		if(!file.exists())
+		// File file = new File(soundController.media.getPath());
+		// if(!file.exists())
 		if (soundController.getMedia() == null)
 			playButton.setEnabled(false);
 		description = (EditText) findViewById(R.id.soundDescription);
 	}
 
+	/*
+	 * Regarde si on est en train d'enregistrer : Si on est en train
+	 * d'enregistrer, change le texte du boutton, et appel la fonction d'arret
+	 * de l'enregistrement 
+	 * Si on est pas en train d'enregistrer, change le texte
+	 * du boutton, et appel la fonction d'enregistrement
+	 */
 	public void record() {
 		if (soundController.isRecording()) {
 			recordButton.setText(R.string.record);
@@ -63,6 +72,13 @@ public class SoundActivity extends ParentMenuActivity {
 		}
 	}
 
+	/*
+	 * Regarde si on est en train d'ecoute le media : Si on est en train
+	 * d'ecouter, change le texte du boutton, et appel la fonction pour arreter
+	 * l'ecoute 
+	 * Si on est pas en train d'ecouter, change le texte du boutton, et
+	 * appel la fonction d'ecoute
+	 */
 	public void playSound() {
 		if (soundController.isPlaying()) {
 			playButton.setText(R.string.play);
@@ -74,15 +90,74 @@ public class SoundActivity extends ParentMenuActivity {
 			soundController.setPlaying(true);
 		}
 	}
-	
-	public void saveAndSend(){
+
+	/*
+	 * Lie la description au media Ajout le media a l'historique Redirige vers
+	 * MainActivity
+	 */
+	public void saveAndSend() {
 		soundController.setDescription(description.getText().toString());
 		historic.add(soundController.getMedia());
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onRestoreInstanceState(android.os.Bundle)
+	 * Recuperation des donnés lié au media (son) et réinjection de celles ci
+	 */
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+
+		soundController
+				.setRecording(savedInstanceState.getBoolean("recording"));
+		soundController.setPlaying(savedInstanceState.getBoolean("playing"));
+
+		soundController.setMedia(new Media(MediaType.SOUND, savedInstanceState
+				.getString("mediaName"), savedInstanceState
+				.getString("mediaPath"), savedInstanceState
+				.getString("mediaDescription")));
+
+		description.setText(savedInstanceState.getString("description"));
+
+		if (soundController.isPlaying())
+			playButton.setText(R.string.stop);
+		else
+			playButton.setText(R.string.play);
+
+		if (soundController.isRecording())
+			recordButton.setText(R.string.stopRecord);
+		else
+			recordButton.setText(R.string.record);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
+	 * Enregistre les donné lié au media (son) lors de la rotation de l'ecran
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("recording", soundController.isRecording());
+		outState.putBoolean("playing", soundController.isPlaying());
+		if (soundController.getMedia() != null) {
+			outState.putString("mediaName", soundController.getMedia()
+					.getName());
+			outState.putString("mediaPath", soundController.getMedia()
+					.getPath());
+			outState.putString("mediaDescription", soundController.getMedia()
+					.getDescription());
+		}
+
+		outState.putString("description", description.getText().toString());
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -104,54 +179,12 @@ public class SoundActivity extends ParentMenuActivity {
 			return true;
 		}
 		if (id == R.id.itemCancelSound) {
-			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+			Intent intent = new Intent(getApplicationContext(),
+					MainActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-
-		super.onRestoreInstanceState(savedInstanceState);
-		
-		soundController.setRecording(savedInstanceState.getBoolean("recording"));
-		soundController.setPlaying(savedInstanceState.getBoolean("playing"));
-		
-		soundController.setMedia(new Media(MediaType.SOUND, savedInstanceState.getString("mediaName"), savedInstanceState.getString("mediaPath"), savedInstanceState.getString("mediaDescription")));
-		
-		description.setText(savedInstanceState.getString("description"));
-		
-		if (soundController.isPlaying())
-			playButton.setText(R.string.stop);
-		else
-			playButton.setText(R.string.play);
-
-		if (soundController.isRecording())
-			recordButton.setText(R.string.stopRecord);
-		else
-			recordButton.setText(R.string.record);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		outState.putBoolean("recording", soundController.isRecording());
-		outState.putBoolean("playing", soundController.isPlaying());
-		if (soundController.getMedia() != null)
-		{
-			outState.putString("mediaName", soundController.getMedia().getName());
-			outState.putString("mediaPath", soundController.getMedia().getPath());
-			outState.putString("mediaDescription", soundController.getMedia().getDescription());
-		}
-
-		outState.putString("description", description.getText().toString());
-
-		super.onSaveInstanceState(outState);
-	}
-	
-	
 }
