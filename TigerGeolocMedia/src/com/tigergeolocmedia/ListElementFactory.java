@@ -22,6 +22,12 @@ public class ListElementFactory implements Observable.OnSubscribe<HistoricElemen
 		Historic historic = Historic.getInstance(context);
 		
 		try{
+			/*
+			 *  Pour chaque Media dans la liste de Media : 
+			 *  Recupere les informations concernant le media, charge le media en memoire
+			 *  Et cree un HistoricElement en lui remplissant ses information
+			 */
+			
 			for (Media m : historic.getMediaList()) {
 				
 				BitmapFactory.Options options = new BitmapFactory.Options();
@@ -40,7 +46,4 @@ public class ListElementFactory implements Observable.OnSubscribe<HistoricElemen
 	}	
 }
 
-
-//Observer#onNext(Object item) for each item 
-//and either Observer#onCompleted() or Observer#onError(Throwable t)
 

@@ -24,7 +24,11 @@ public class HistoricActivity extends ParentMenuActivity {
 		
 		context = getApplicationContext();
 		historic = Historic.getInstance(context);
+		
+		// Cree la factory qui cree les element (item) de la listView
 		ListElementFactory factory = new ListElementFactory(context);
+		
+		// Creation de l'observable contenant la liste des element pour que l'adapter puisse cree l'affichage
 		Observable<HistoricElement> observable = Observable.create(factory);
 		observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 		CustomListAdapter adapter = new CustomListAdapter(this, observable);
@@ -41,6 +45,7 @@ public class HistoricActivity extends ParentMenuActivity {
 					int position = listView.getPositionForView(e.view);
 					Media media = historic.getMediaList().get(position);
 					Toast.makeText(context, "Vous avez clique sur" + media.getName(), Toast.LENGTH_SHORT).show();
+					//TODO changer d'activité pour pouvoir afficher le media en grand avec ses informations et le jouer
 				}
 				
 			});

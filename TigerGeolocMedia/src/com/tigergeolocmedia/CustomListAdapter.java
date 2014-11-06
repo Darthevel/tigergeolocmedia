@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CustomListAdapter extends BaseAdapter implements Observer<HistoricElement> {
 	private Activity activity;
@@ -41,6 +42,11 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		return position;
 	}
 
+	/*
+	 * Pour chaque element de la liste :
+	 * Recupere l'element a la position "position"
+	 * Pour recuperer ses informations (miniature, nom, description) et les afficher
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
@@ -54,9 +60,8 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		TextView title = (TextView) convertView.findViewById(R.id.title);
 		TextView type = (TextView) convertView.findViewById(R.id.mediaType);
 		TextView description = (TextView) convertView.findViewById(R.id.description);
-//		TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
 
-		// getting historic data for the row
+		// getting historic data for the row "position"
 		HistoricElement element = elementList.get(position);
 		
 		//Image
@@ -70,9 +75,6 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		
 		// Description
 		description.setText(element.getDescription());
-				
-//		// release year
-//		year.setText(String.valueOf(m.getYear()));
 
 		return convertView;
 	}
@@ -80,13 +82,13 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 	@Override
 	public void onCompleted() {
 		this.factory = null;
-		// TODO toast to user
+		Toast.makeText(activity.getApplicationContext(), "Chargement Fini", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onError(Throwable arg0) {
 		this.factory = null;
-		// TODO toast to user
+		Toast.makeText(activity.getApplicationContext(), "Une Erreur s'est produite lors du chargement", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -95,7 +97,4 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		this.elementList.add(arg0);
 		notifyDataSetChanged();
 	}
-
-
-
 }
