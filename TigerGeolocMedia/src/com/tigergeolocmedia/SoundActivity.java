@@ -1,14 +1,18 @@
 package com.tigergeolocmedia;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.view.WindowManager;
 
 public class SoundActivity extends ParentMenuActivity {
 
@@ -54,6 +58,30 @@ public class SoundActivity extends ParentMenuActivity {
 		description = (EditText) findViewById(R.id.soundDescription);
 	}
 
+	public void lockRotation()
+	{
+//		switch (getResources().getConfiguration().orientation){
+//		case Configuration.ORIENTATION_PORTRAIT :
+//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//			break;
+//		}
+	   final int rotation = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();//getOrientation();
+       switch (rotation) {
+        case Surface.ROTATION_0:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        	break;
+        case Surface.ROTATION_90:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            break;
+        case Surface.ROTATION_180:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+        	break;
+        default:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        	break;
+        }		
+	}
+	
 	/*
 	 * Regarde si on est en train d'enregistrer : Si on est en train
 	 * d'enregistrer, change le texte du boutton, et appel la fonction d'arret
@@ -69,10 +97,7 @@ public class SoundActivity extends ParentMenuActivity {
 			playButton.setEnabled(true);
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
-			if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			else
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			lockRotation();
 			recordButton.setText(R.string.stopRecord);
 			soundController.record();
 			soundController.setRecording(true);
@@ -93,10 +118,7 @@ public class SoundActivity extends ParentMenuActivity {
 			soundController.setPlaying(false);
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
-			if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			else
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			lockRotation();
 			playButton.setText(R.string.stop);
 			soundController.play();
 			soundController.setPlaying(true);
