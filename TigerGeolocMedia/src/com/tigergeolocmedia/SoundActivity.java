@@ -3,9 +3,7 @@ package com.tigergeolocmedia;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -58,13 +56,11 @@ public class SoundActivity extends ParentMenuActivity {
 		description = (EditText) findViewById(R.id.soundDescription);
 	}
 
+	/*
+	 * Permet de lock l'ecran sur son orientation actuelle
+	 */
 	public void lockRotation()
 	{
-//		switch (getResources().getConfiguration().orientation){
-//		case Configuration.ORIENTATION_PORTRAIT :
-//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//			break;
-//		}
 	   final int rotation = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();//getOrientation();
        switch (rotation) {
         case Surface.ROTATION_0:
@@ -147,8 +143,7 @@ public class SoundActivity extends ParentMenuActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
-		soundController
-				.setRecording(savedInstanceState.getBoolean("recording"));
+		soundController.setRecording(savedInstanceState.getBoolean("recording"));
 		soundController.setPlaying(savedInstanceState.getBoolean("playing"));
 
 		if (savedInstanceState.containsKey("mediaName"))
