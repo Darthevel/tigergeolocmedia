@@ -44,7 +44,7 @@ public class HistoricActivity extends ParentMenuActivity {
 				public void call(OnItemClickEvent e) {
 					int position = listView.getPositionForView(e.view);
 					Media media = historic.getMediaList().get(position);
-					Toast.makeText(context, "Vous avez clique sur" + media.getName(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, getString(R.string.youClickedOn) + media.getName(), Toast.LENGTH_SHORT).show();
 					//TODO changer d'activité pour pouvoir afficher le media en grand avec ses informations et le jouer
 				}
 				

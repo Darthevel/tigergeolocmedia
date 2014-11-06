@@ -71,7 +71,7 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 		title.setText(element.getName());
 		
 		// MediaType
-		type.setText("Type: " + String.valueOf(element.getType().toString()));
+		type.setText(activity.getString(R.string.type_adapter) + String.valueOf(element.getType().toString()));
 		
 		// Description
 		description.setText(element.getDescription());
@@ -82,19 +82,24 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 	@Override
 	public void onCompleted() {
 		this.factory = null;
-		Toast.makeText(activity.getApplicationContext(), "Chargement Fini", Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.loading_adapter), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onError(Throwable arg0) {
 		this.factory = null;
-		Toast.makeText(activity.getApplicationContext(), "Une Erreur s'est produite lors du chargement", Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.error_adapter), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onNext(HistoricElement arg0) {
-		// des qu'il y a un nouvel historicElement (ajout a la liste d'element) + notify listview
+		// Des qu'il y a un nouvel historicElement (ajout a la liste d'element) + notify listview
 		this.elementList.add(arg0);
 		notifyDataSetChanged();
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		return false;
 	}
 }
