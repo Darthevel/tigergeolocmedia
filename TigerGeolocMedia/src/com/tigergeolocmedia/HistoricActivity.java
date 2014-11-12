@@ -1,5 +1,7 @@
 package com.tigergeolocmedia;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import rx.Observable;
 import rx.android.events.OnItemClickEvent;
 import rx.android.observables.ViewObservable;
@@ -13,7 +15,7 @@ import android.widget.Toast;
 
 public class HistoricActivity extends ParentMenuActivity {
 
-	private ListView listView;
+	@InjectView(R.id.listView) ListView listView;
 	private Historic historic;
 	private Context context;
 	
@@ -21,6 +23,8 @@ public class HistoricActivity extends ParentMenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_historic);
+		
+		ButterKnife.inject(this);
 		
 		context = getApplicationContext();
 		historic = Historic.getInstance(context);

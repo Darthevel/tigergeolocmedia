@@ -1,5 +1,8 @@
 package com.tigergeolocmedia;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -7,19 +10,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.WindowManager;
 
 public class SoundActivity extends ParentMenuActivity {
 
-	private Button recordButton = null;
-	private Button playButton = null;
-	private EditText description;
-	private Historic historic = null;
+	@InjectView(R.id.recordButton) Button recordButton;
+	@InjectView(R.id.playSoundButton) Button playButton;
+	@InjectView(R.id.soundDescription) EditText description;
 
-	/**
+	private Historic historic = null; 
+
+	/*
 	 * Contrôleur de son.
 	 */
 	private SoundController soundController = new SoundController(
@@ -31,29 +34,17 @@ public class SoundActivity extends ParentMenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sound);
 
+		ButterKnife.inject(this);
+
 		// Initialisation des bouttons et champs de l'activité
 		// Recuperation de l'historique pour pouvoir stoquer tout nouveaux sons
 		historic = Historic.getInstance(getApplicationContext());
-		recordButton = (Button) findViewById(R.id.recordButton);
-		recordButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				record();
-			}
-		});
-
-		playButton = (Button) findViewById(R.id.playSoundButton);
-		playButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSound();
-			}
-		});
+		
 		// File file = new File(soundController.media.getPath());
 		// if(!file.exists())
 		if (soundController.getMedia() == null)
 			playButton.setEnabled(false);
-		description = (EditText) findViewById(R.id.soundDescription);
+		//description = (EditText) findViewById(R.id.soundDescription);
 	}
 
 	/*
@@ -85,6 +76,7 @@ public class SoundActivity extends ParentMenuActivity {
 	 * Si on est pas en train d'enregistrer, change le texte
 	 * du boutton, et appel la fonction d'enregistrement
 	 */
+	@OnClick(R.id.recordButton)
 	public void record() {
 		if (soundController.isRecording()) {
 			recordButton.setText(R.string.record);
@@ -107,6 +99,7 @@ public class SoundActivity extends ParentMenuActivity {
 	 * Si on est pas en train d'ecouter, change le texte du boutton, et
 	 * appel la fonction d'ecoute
 	 */
+	@OnClick(R.id.playSoundButton)
 	public void playSound() {
 		if (soundController.isPlaying()) {
 			playButton.setText(R.string.play);

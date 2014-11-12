@@ -14,11 +14,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import com.tigergeolocmedia.webservices.RetrieveUsersBuilder;
 import com.tigergeolocmedia.webservices.RetrieveUsersService;
@@ -27,9 +28,8 @@ public class PersonActivity extends ParentMenuActivity {
 	
 	private RetrieveUsersService retrieveUsersService = RetrieveUsersBuilder.create();
 
-
-	private EditText username;
-	private EditText email;
+	@InjectView(R.id.editTextUsername) EditText username;
+	@InjectView(R.id.editTextEmail) EditText email;
 	
 	private SharedPreferences prefs = null;
 
@@ -38,6 +38,7 @@ public class PersonActivity extends ParentMenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_person);
 		
+		ButterKnife.inject(this);
 
 		// testRetrofit1();
 		// testRetrofitLogin("darthevel");
@@ -52,9 +53,6 @@ public class PersonActivity extends ParentMenuActivity {
 //		String mail;
 //		if (prefs.contains("email"))
 //			mail = prefs.getString("email", null);
-		
-		username = (EditText) findViewById(R.id.editTextUsername);
-		email = (EditText) findViewById(R.id.editTextEmail);
 		
 		GeolocMediaBddHelper readableHelper = new GeolocMediaBddHelper(getApplicationContext());
 		if (name != null)
