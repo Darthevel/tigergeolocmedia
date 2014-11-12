@@ -1,6 +1,0 @@
-bin
-.settings
-*~
-gen
-*.class
-.apt_generated

@@ -17,7 +17,7 @@ import android.view.WindowManager;
 public class SoundActivity extends ParentMenuActivity {
 
 	@InjectView(R.id.recordButton) Button recordButton;
-	@InjectView(R.id.playSoundButton) Button playButton;
+	@InjectView(R.id.playSoundButton) Button playButton; 
 	@InjectView(R.id.soundDescription) EditText description;
 
 	private Historic historic = null; 
@@ -42,9 +42,10 @@ public class SoundActivity extends ParentMenuActivity {
 		
 		// File file = new File(soundController.media.getPath());
 		// if(!file.exists())
+
+		//description = (EditText) findViewById(R.id.soundDescription);
 		if (soundController.getMedia() == null)
 			playButton.setEnabled(false);
-		//description = (EditText) findViewById(R.id.soundDescription);
 	}
 
 	/*
