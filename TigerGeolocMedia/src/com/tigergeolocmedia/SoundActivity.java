@@ -120,10 +120,13 @@ public class SoundActivity extends ParentMenuActivity {
 	 */
 	public void saveAndSend() {
 		soundController.setDescription(description.getText().toString());
-		historic.add(soundController.getMedia());
-		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
+		if (soundController.getMedia() != null)
+		{
+			historic.add(soundController.getMedia());
+			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		}
 	}
 
 	/*
