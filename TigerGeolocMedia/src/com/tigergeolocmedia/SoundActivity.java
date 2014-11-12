@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.view.WindowManager;
 
 public class SoundActivity extends ParentMenuActivity {
@@ -120,14 +121,16 @@ public class SoundActivity extends ParentMenuActivity {
 	 * MainActivity
 	 */
 	public void saveAndSend() {
-		soundController.setDescription(description.getText().toString());
 		if (soundController.getMedia() != null)
 		{
+			soundController.setDescription(description.getText().toString());
 			historic.add(soundController.getMedia());
 			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
+		else
+			Toast.makeText(getApplicationContext(), "Vous n'avez encore rien enregistré", Toast.LENGTH_SHORT).show();
 	}
 
 	/*

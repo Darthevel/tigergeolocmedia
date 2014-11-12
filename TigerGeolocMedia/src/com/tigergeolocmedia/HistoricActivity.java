@@ -9,9 +9,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.tigergeolocmedia.Media;
+import com.tigergeolocmedia.util.Registry;
 
 public class HistoricActivity extends ParentMenuActivity {
 
@@ -49,9 +52,28 @@ public class HistoricActivity extends ParentMenuActivity {
 					int position = listView.getPositionForView(e.view);
 					Media media = historic.getMediaList().get(position);
 					Toast.makeText(context, getString(R.string.youClickedOn) + media.getName(), Toast.LENGTH_SHORT).show();
-					//TODO changer d'activité pour pouvoir afficher le media en grand avec ses informations et le jouer
+					showMedia(media);
 				}
 				
 			});
+	}
+
+	protected void showMedia(Media media) {
+		if (media.getType().equals(MediaType.PICTURE)) {
+			PictureController pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+			pictureController.setMedia(media);
+			
+			Intent intent = new Intent(this, PictureActivityReadOnly.class);
+			startActivity(intent);
+
+			return;
+		}
+		if (media.getType().equals(MediaType.MOVIE)) {
+			return;
+		}
+		if (media.getType().equals(MediaType.SOUND)) {
+			return;
+		}
+		
 	}
 }

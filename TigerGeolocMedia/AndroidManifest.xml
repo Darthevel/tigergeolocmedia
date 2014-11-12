@@ -93,8 +93,8 @@
             android:label="@string/title_activity_map" >
         </activity>
         <activity
-            android:name=".MapViewActivity"
-            android:label="@string/title_activity_map_view" >
+            android:name=".PictureActivityReadOnly"
+            android:label="@string/title_activity_picture_activity_read_only" >
         </activity>
     </application>
 
