@@ -3,5 +3,3 @@ bin
 *~
 gen
 *.class
-/project.properties
-/AndroidManifest.xml
