@@ -44,13 +44,38 @@ public class MainActivity extends ParentMenuActivity {
 	/**
 	 * Contrôleur d'images.
 	 */
-	private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+	// private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+	private PictureController pictureController = null;
 	
 	
+	
+	public MainActivity() {
+		super();
+		
+		initControllers();
+	}
+
+	private void initControllers() {
+		pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+		if (pictureController == null) {
+			pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+			Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
+		}
+		pictureController.setActivity(this);
+		
+		movieController = Registry.get(Constants.MOVIE_CONTROLLER);
+		if (movieController == null) {
+			movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+			Registry.register(Constants.MOVIE_CONTROLLER, movieController);
+		}
+		movieController.setActivity(this);
+	}
+
 	/**
 	 * Contrôleur de video.
 	 */
-	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+	// private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+	private MovieController movieController = null;
 
 	private Historic historic = null;
 
@@ -198,7 +223,7 @@ public class MainActivity extends ParentMenuActivity {
 		initial = savedInstanceState.getBoolean(INITIAL_KEY);
 		
 		
-		pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+		// pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
 
 	}
 	
@@ -237,14 +262,15 @@ public class MainActivity extends ParentMenuActivity {
 		outState.putParcelable(Constants.VIDEO_STORAGE_KEY, videoURI);
 
 		
-		Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
+		// Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
 
 	}
 	
 	private void startPictureActivity() {
 		if (pictureController.getMedia() != null) {
 			Intent intent = new Intent(this, PictureActivity.class);
-			intent.putExtra(Constants.PICTURE_CONTROLLER_PARCELABLE, pictureController);
+			// intent.putExtra(Constants.PICTURE_CONTROLLER_PARCELABLE, pictureController);
+			// Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
 			startActivity(intent);
 		}
 	}
@@ -259,7 +285,8 @@ public class MainActivity extends ParentMenuActivity {
 
 			Intent intent = new Intent(this, VideoViewActivity.class);
 			
-			intent.putExtra(Constants.MOVIE_CONTROLLER_PARCELABLE, movieController);
+			// intent.putExtra(Constants.MOVIE_CONTROLLER_PARCELABLE, movieController);
+			// Registry.register(Constants.MOVIE_CONTROLLER, movieController);
 			intent.putExtra(Constants.MOVIE_URI, videoURI);
 			startActivity(intent);
 		}

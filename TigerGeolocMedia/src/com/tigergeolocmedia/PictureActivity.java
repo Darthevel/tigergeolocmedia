@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.tigergeolocmedia.PictureController.VisualEffect;
+import com.tigergeolocmedia.util.Registry;
 
 public class PictureActivity extends ParentMenuActivity {
 
@@ -60,8 +61,7 @@ public class PictureActivity extends ParentMenuActivity {
 		historic = Historic.getInstance(getApplicationContext());
 
 		Intent intent = getIntent();
-		PictureController controller = intent
-				.getParcelableExtra(Constants.PICTURE_CONTROLLER_PARCELABLE);
+		PictureController controller = Registry.get(Constants.PICTURE_CONTROLLER);
 		this.controller = controller;
 		pictureView = (ImageView) findViewById(R.id.pictureViewPicture);
 
@@ -147,13 +147,31 @@ public class PictureActivity extends ParentMenuActivity {
 		
 		if (!itemSaveEnabled) {
 			MenuItem item = menu.findItem(R.id.itemSave);
+			disable();
 			item.setEnabled(false);
 		}
 		if (!itemSaveAndSendEnabled) {
 			MenuItem item = menu.findItem(R.id.itemSaveAndSend);
+			disable();
 			item.setEnabled(false);
 		}
 		return true;
+	}
+
+	/**
+	 * Désactivation des contrôles suivants:
+	 * <li>{@link #editTextDescription}
+	 * <li>{@link #imageViewVisualEffectBW}
+	 * <li>{@link #imageViewVisualEffectNone}
+	 * <li>{@link #imageViewVisualEffectSaturation}
+	 * En effet, une fois que l'image a été sauvegardée, il n'est plus possible, ni de modifier
+	 * sa description, ni d'appliquer un effet dessus	 */
+	private void disable() {
+		editTextDescription.setEnabled(false);
+		imageViewVisualEffectBW.setEnabled(false);
+		imageViewVisualEffectNone.setEnabled(false);
+		imageViewVisualEffectSaturation.setEnabled(false);
+		
 	}
 
 	@Override
@@ -176,6 +194,7 @@ public class PictureActivity extends ParentMenuActivity {
 			item = menu.findItem(R.id.itemSave);
 			itemSaveEnabled = false;
 			item.setEnabled(false);
+			disable();
 
 			return true;
 		}
@@ -185,6 +204,7 @@ public class PictureActivity extends ParentMenuActivity {
 			// On vient de sauver l'image, on interdit une nouvelle sauvegarde.
 			itemSaveEnabled = false;
 			item.setEnabled(false);
+			disable();
 			return true;
 		}
 		if (id == R.id.itemCancel) {
@@ -265,7 +285,7 @@ public class PictureActivity extends ParentMenuActivity {
 		restoreImage();
 	}
 
-	private void restoreImage() {
+	protected void restoreImage() {
 		Media media = controller.getMedia();
 
 		if (media != null) {
@@ -338,6 +358,9 @@ public class PictureActivity extends ParentMenuActivity {
 		}
 		itemSaveEnabled = savedInstanceState.getBoolean(ITEM_SAVE_ENABLED_KEY);
 		itemSaveAndSendEnabled = savedInstanceState.getBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY);
+		if (!itemSaveEnabled) {
+			disable();
+		}
 	}
 	
 	

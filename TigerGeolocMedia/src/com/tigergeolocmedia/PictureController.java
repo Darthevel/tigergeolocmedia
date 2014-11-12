@@ -280,4 +280,13 @@ public class PictureController extends MediaControllerBase {
 		}
 	}
 
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+	
+
 }

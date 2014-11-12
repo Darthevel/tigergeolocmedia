@@ -22,6 +22,12 @@ public class ParentMenuActivity extends Activity {
 	private String[] drawerItemsList;
 	private ListView myDrawer;
 	private DrawerLayout drawerLayout;
+	
+	
+
+	public ParentMenuActivity() {
+		super();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

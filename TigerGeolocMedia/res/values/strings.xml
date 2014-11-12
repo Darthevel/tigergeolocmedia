@@ -14,17 +14,7 @@
     <string name="takeSound">Son</string>
     <string name="title_activity_person">PersonActivity</string>
     <string name="title_activity_historic">HistoricActivity</string>
-
-    <string-array name="items">
-        <item>Capturer un media</item>
-        <item>les médias autour de moi</item>
-        <item>les medias de ceux que je suis</item>
-        <item>mon compte</item>
-        <item>Historique</item>
-        <item>Map</item>
-    </string-array>
-
-<string name="title_activity_picture">PictureActivity</string>
+    <string name="title_activity_picture">PictureActivity</string>
     <string name="title_activity_movie">MovieActivity</string>
     <string name="title_activity_media">MediaActivity</string>
     <string name="picture_description">Contient la photo qu\'on vient de prendre</string>
@@ -48,6 +38,22 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_map_view">MapViewActivity</string>
+    <string name="type_adapter">Type : </string>
+    <string name="loading_adapter">Chargement Fini</string>
+    <string name="error_adapter">Une Erreur s\'est produite lors du chargement</string>
+    <string name="youClickedOn">Vous avez clique sur </string>
+
+
+
+    <string-array name="items">
+        <item>Capturer un media</item>
+        <item>les médias autour de moi</item>
+        <item>les medias de ceux que je suis</item>
+        <item>mon compte</item>
+        <item>Historique</item>
+        <item>Map</item>
+    </string-array>
+
+    <string name="title_activity_picture_activity_read_only">PictureActivityReadOnly</string>
 
 </resources>

@@ -37,6 +37,8 @@ public class PersonActivity extends ParentMenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_person);
+		// testRetrofitList();
+		testRetrofit1();
 		
 
 		// testRetrofit1();

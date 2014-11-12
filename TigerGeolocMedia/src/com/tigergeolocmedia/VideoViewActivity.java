@@ -1,5 +1,7 @@
 package com.tigergeolocmedia;
 
+import com.tigergeolocmedia.util.Registry;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -63,8 +65,9 @@ public class VideoViewActivity extends ParentMenuActivity {
 
 		
 		Intent intent = getIntent();
-		MovieController controller = intent
-				.getParcelableExtra(Constants.MOVIE_CONTROLLER_PARCELABLE);
+//		MovieController controller = intent
+//				.getParcelableExtra(Constants.MOVIE_CONTROLLER_PARCELABLE);
+		MovieController controller = Registry.get(Constants.MOVIE_CONTROLLER);
 		this.controller = controller;
 
 
