@@ -9,5 +9,10 @@
 	<classpathentry kind="lib" path="libs/rxandroid-0.22.0.jar"/>
 	<classpathentry kind="lib" path="libs/retrofit-1.7.1.jar"/>
 	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
