@@ -42,6 +42,8 @@
     <string name="loading_adapter">Chargement Fini</string>
     <string name="error_adapter">Une Erreur s\'est produite lors du chargement</string>
     <string name="youClickedOn">Vous avez clique sur </string>
+    <string name="getUserButton">Get Users List</string>
+    
     <string-array name="items">
         <item>Capturer un media</item>
         <item>les médias autour de moi</item>
