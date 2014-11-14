@@ -4,7 +4,6 @@ import java.io.File;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -119,6 +118,7 @@ public class MainActivity extends ParentMenuActivity {
 
 		});
 		pictureView = (ImageView) findViewById(R.id.pictureView);
+		// Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").error(R.drawable.error).into(pictureView);
 	}
 
 	protected void takeMovie() {
@@ -183,19 +183,6 @@ public class MainActivity extends ParentMenuActivity {
 		startPictureActivity();
 	}
 	
-	private void setPic(Media media) {
-		/* There isn't enough memory to open up more than a couple camera photos */
-		/* So pre-scale the target bitmap into which the file is decoded */
-
-		/* Get the size of the ImageView */
-		int targetW = pictureView.getWidth();
-		int targetH = pictureView.getHeight();
-		
-		Bitmap currentBitmap = PictureController.computeBitmap(media, targetW, targetH, true);
-		
-		/* Associate the Bitmap to the ImageView */
-		pictureView.setImageBitmap(currentBitmap);
-	}
 	
 	private void handleMovie() {
 

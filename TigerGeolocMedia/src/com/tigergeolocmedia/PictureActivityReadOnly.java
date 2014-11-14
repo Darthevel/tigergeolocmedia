@@ -1,18 +1,31 @@
 package com.tigergeolocmedia;
 
-import android.graphics.Bitmap;
+import java.io.File;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tigergeolocmedia.util.Registry;
 
+/**
+ * Activity gérant la visualisation d'une image déjà sauvegardée : voilà le pourquoi du "ReadOnly".
+ * @author HumanBooster
+ *
+ */
 public class PictureActivityReadOnly extends ParentMenuActivity  {
 
+	/**
+	 * Le {@link TextView} contenant la description de l'image (du {@link Media}).
+	 */
 	private TextView textViewDescription;
 	
+	/**
+	 * La {@link TextView} contenant l'image.
+	 */
 	private ImageView pictureView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +39,10 @@ public class PictureActivityReadOnly extends ParentMenuActivity  {
 		textViewDescription.setEnabled(false);
 		
 		pictureView = (ImageView) findViewById(R.id.pictureViewPicture);
-
+		
+		// Pas besoin d'ActionBar ici.
+		getActionBar().hide();
+		
 	}
 
 	@Override
@@ -65,21 +81,16 @@ public class PictureActivityReadOnly extends ParentMenuActivity  {
 		}
 
 	}
-	private static void setPic(Media media, ImageView imageView) {
-		/* There isn't enough memory to open up more than a couple camera photos */
-		/* So pre-scale the target bitmap into which the file is decoded */
 
-		/* Get the size of the ImageView */
-		int targetW = imageView.getWidth();
-		int targetH = imageView.getHeight();
+	private void setPic(Media media, ImageView imageView) {
+		File file =  new File(media.getPath());
+		boolean exists = file.exists();
+		if (exists) {
+		Picasso.with(getApplicationContext()).load(file).error(R.drawable.error).into(imageView);
+		}
 
-		Bitmap bitmap = PictureController.computeBitmap(media, targetW,
-				targetH, false);
-
-
-		/* Associate the Bitmap to the ImageView */
-		imageView.setImageBitmap(bitmap);
 	}
+
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {

@@ -28,6 +28,11 @@ public abstract class MediaControllerBase implements MediaController, Parcelable
 
 
 
+	/**
+	 * Création du fichier qui va contenir le media à capturer.
+	 * @return
+	 * @throws IOException
+	 */
 	protected File createFile() throws IOException {
 		if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 			// Todo : afficher un dialog ou lever une exception

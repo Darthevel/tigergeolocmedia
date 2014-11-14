@@ -10,15 +10,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.view.WindowManager;
 
 public class SoundActivity extends ParentMenuActivity {
 
 	@InjectView(R.id.recordButton) Button recordButton;
-	@InjectView(R.id.playSoundButton) Button playButton; 
+	@InjectView(R.id.playSoundButton) Button playButton;
 	@InjectView(R.id.soundDescription) EditText description;
 
 	private Historic historic = null; 
@@ -36,6 +36,26 @@ public class SoundActivity extends ParentMenuActivity {
 		setContentView(R.layout.activity_sound);
 
 		ButterKnife.inject(this);
+		
+		recordButton = (Button) findViewById(R.id.recordButton);
+		recordButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				record();
+				
+			}
+		});
+		playButton = (Button) findViewById(R.id.playSoundButton);
+		playButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				playSound();
+				
+			}
+		});
+		description = (EditText) findViewById(R.id.soundDescription);
 
 		// Initialisation des bouttons et champs de l'activité
 		// Recuperation de l'historique pour pouvoir stoquer tout nouveaux sons
@@ -43,10 +63,9 @@ public class SoundActivity extends ParentMenuActivity {
 		
 		// File file = new File(soundController.media.getPath());
 		// if(!file.exists())
-
-		//description = (EditText) findViewById(R.id.soundDescription);
 		if (soundController.getMedia() == null)
 			playButton.setEnabled(false);
+		//description = (EditText) findViewById(R.id.soundDescription);
 	}
 
 	/*
@@ -121,16 +140,11 @@ public class SoundActivity extends ParentMenuActivity {
 	 * MainActivity
 	 */
 	public void saveAndSend() {
-		if (soundController.getMedia() != null)
-		{
-			soundController.setDescription(description.getText().toString());
-			historic.add(soundController.getMedia());
-			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-		}
-		else
-			Toast.makeText(getApplicationContext(), "Vous n'avez encore rien enregistré", Toast.LENGTH_SHORT).show();
+		soundController.setDescription(description.getText().toString());
+		historic.add(soundController.getMedia());
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 	}
 
 	/*
