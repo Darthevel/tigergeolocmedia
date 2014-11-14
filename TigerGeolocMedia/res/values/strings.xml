@@ -14,7 +14,7 @@
     <string name="takeSound">Son</string>
     <string name="title_activity_person">PersonActivity</string>
     <string name="title_activity_historic">HistoricActivity</string>
-	<string name="title_activity_picture">PictureActivity</string>
+    <string name="title_activity_picture">PictureActivity</string>
     <string name="title_activity_movie">MovieActivity</string>
     <string name="title_activity_media">MediaActivity</string>
     <string name="picture_description">Contient la photo qu\'on vient de prendre</string>
@@ -43,7 +43,7 @@
     <string name="error_adapter">Une Erreur s\'est produite lors du chargement</string>
     <string name="youClickedOn">Vous avez clique sur </string>
     <string name="getUserButton">Get Users List</string>
-    
+
     <string-array name="items">
         <item>Capturer un media</item>
         <item>les médias autour de moi</item>
@@ -51,6 +51,10 @@
         <item>mon compte</item>
         <item>Historique</item>
         <item>Map</item>
-    </string-array>
+        <item>Users List</item>
+        </string-array>
+
     <string name="title_activity_picture_activity_read_only">PictureActivityReadOnly</string>
+    <string name="title_activity_show_list_users">ShowListUsersActivity</string>
+
 </resources>

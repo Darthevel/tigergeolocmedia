@@ -93,6 +93,11 @@ public class ParentMenuActivity extends Activity {
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;
+			case 6:
+				intent = new Intent(getApplicationContext(), ShowListUsersActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
+				break;
 
 			default:
 				break;

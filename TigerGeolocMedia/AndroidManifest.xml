@@ -96,6 +96,10 @@
             android:name=".PictureActivityReadOnly"
             android:label="@string/title_activity_picture_activity_read_only" >
         </activity>
+        <activity
+            android:name=".ShowListUsersActivity"
+            android:label="@string/title_activity_show_list_users" >
+        </activity>
     </application>
 
 </manifest>
