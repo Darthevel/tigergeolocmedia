@@ -27,6 +27,10 @@ public class HistoricActivity extends ParentMenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_historic);
 		
+		// Pas besoin d'ActionBar ici.
+		getActionBar().hide();
+
+		
 		ButterKnife.inject(this);
 		
 		context = getApplicationContext();
@@ -69,6 +73,11 @@ public class HistoricActivity extends ParentMenuActivity {
 			return;
 		}
 		if (media.getType().equals(MediaType.MOVIE)) {
+			MovieController movieController = Registry.get(Constants.MOVIE_CONTROLLER);
+			movieController.setMedia(media);
+			
+			Intent intent = new Intent(this, VideoViewActivityReadOnly.class);
+			startActivity(intent);
 			return;
 		}
 		if (media.getType().equals(MediaType.SOUND)) {

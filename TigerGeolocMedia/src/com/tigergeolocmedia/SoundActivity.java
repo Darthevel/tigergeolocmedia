@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.WindowManager;
@@ -35,6 +36,26 @@ public class SoundActivity extends ParentMenuActivity {
 		setContentView(R.layout.activity_sound);
 
 		ButterKnife.inject(this);
+		
+		recordButton = (Button) findViewById(R.id.recordButton);
+		recordButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				record();
+				
+			}
+		});
+		playButton = (Button) findViewById(R.id.playSoundButton);
+		playButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				playSound();
+				
+			}
+		});
+		description = (EditText) findViewById(R.id.soundDescription);
 
 		// Initialisation des bouttons et champs de l'activité
 		// Recuperation de l'historique pour pouvoir stoquer tout nouveaux sons
