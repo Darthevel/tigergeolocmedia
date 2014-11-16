@@ -7,6 +7,7 @@ import rx.functions.Action1;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 
 import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.PictureController.VisualEffect;
+import com.tigergeolocmedia.dba.HistoCrud;
+import com.tigergeolocmedia.dba.TigerBaseSQLite;
 
 public class PictureActivity extends ParentMenuActivity {
 
@@ -255,6 +258,14 @@ public class PictureActivity extends ParentMenuActivity {
 		controller.save(historic);
 
 		historic.add(controller.getMedia());
+		
+		//Using SQLite
+		HistoCrud db = new HistoCrud();
+		db.create(this, controller.getMedia());
+		String log = "ID = "+ controller.getMedia().getId() +
+				", NAME = "+ controller.getMedia().getName() +
+				", MEDIATYPE = "+ controller.getMedia().getType();
+		Log.d("test get:Media", log);
 
 	}
 

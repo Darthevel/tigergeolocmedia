@@ -109,6 +109,10 @@
             android:name=".MapViewActivity"
             android:label="@string/title_activity_map_view" >
         </activity>
+        <activity
+            android:name="HistoricBDDActivity"
+            android:label="@string/title_activity_historic_bdd">
+        </activity>
     </application>
 
 </manifest>

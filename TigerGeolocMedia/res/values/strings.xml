@@ -53,6 +53,7 @@
         <item>mon compte</item>
         <item>Historique</item>
         <item>Map</item>
+        <item>Historique avec BDD</item>
     </string-array>
     
 </resources>

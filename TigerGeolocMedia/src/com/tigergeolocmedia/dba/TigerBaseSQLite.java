@@ -12,10 +12,10 @@ public class TigerBaseSQLite extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "TigerHistoric.db";
     
     private static final String SQL_CREATE_HISTORICS =
-    		"CREATE TABLE" + Historics.TABLE_NAME +
-    		"(" + Historics._ID+ "INTEGER PRIMARY KEY AUTOINCREMENT," + Historics.COLUMN_NAME_HISTORIC_ID + " TEXT," +
-    		Historics.COLUMN_NAME_NAME + " TEXT," + Historics.COLUMN_NAME_DESCRIPTION + " TEXT," +
-    		Historics.COLUMN_NAME_TYPE + " TEXT)";
+    		"CREATE TABLE " + Historics.TABLE_NAME +
+    		" ( " + Historics._ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + Historics.COLUMN_NAME_HISTORIC_ID + " TEXT, " +
+    		Historics.COLUMN_NAME_NAME + " TEXT, " + Historics.COLUMN_NAME_DESCRIPTION + " TEXT, " +
+    		Historics.COLUMN_NAME_TYPE + " TEXT, " + Historics.COLUMN_NAME_PATH + " TEXT );";
     
     private static final String SQL_DELETE_HISTORICS = "DROP TABLE IF EXISTS " + Historics.TABLE_NAME;
 
