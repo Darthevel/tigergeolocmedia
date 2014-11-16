@@ -8,13 +8,6 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -22,12 +15,35 @@ import android.provider.MediaStore;
 
 public class PictureController extends MediaControllerBase {
 
+	/**
+	 * 3 types d'effet :
+	 * <li> {@link #BW} : l'image passe en noir et blanc.
+	 * <li> {@link #SATURATION} : l'image devient <b>très</b> saturée.
+	 * <li> {@link #NONE} : pas d'effet appliqué sur l'image.
+	 * @author HumanBooster
+	 *
+	 */
 	public enum VisualEffect {
 		NONE, BW, SATURATION
 	};
+	
+	/**
+	 * Qualité de compression par défaut.
+	 */
+	private static int COMPRESSION_QUALITY = 40;
 
+	/**
+	 * L'activité courante (celle qui utilise le contrôleur).
+	 */
 	private Activity activity;
 
+	/**
+	 * Constructeur.
+	 * @param prefix
+	 * @param suffix
+	 * @param directory
+	 * @param activity
+	 */
 	public PictureController(String prefix, String suffix, String directory,
 			Activity activity) {
 		super(prefix, suffix, directory);
@@ -73,148 +89,7 @@ public class PictureController extends MediaControllerBase {
 
 	}
 
-	/**
-	 * Construit un {@link Bitmap} à partir du {@link Media} courant (champ
-	 * media). Si media vaut <b>null</b> ou si ce {@link Media} est d'un autre
-	 * type que PICTURE, le {@link Bitmap} renvoyé sera <b>null</b>.
-	 * 
-	 * @param targetW
-	 *            largeur du {@link Bitmap}.
-	 * @param targetH
-	 *            hauteur du {@link Bitmap}.
-	 * @return
-	 */
-
-	public Bitmap computeCurrentBitmap(int targetW, int targetH, boolean manageScaleFactor) {
-		Bitmap bitmap = PictureController
-				.computeBitmap(media, targetW, targetH, manageScaleFactor);
-		return bitmap;
-	}
-
-	/**
-	 * @param currentPicturePath
-	 * @return
-	 */
-	private static int computeBitmapOriendegreesInDegrees(
-			String currentPicturePath) {
-		try {
-			ExifInterface exif = new ExifInterface(currentPicturePath);
-			int exifOrientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-			int bitmapOriendegreesInDegrees = exifToDegrees(exifOrientation);
-			return bitmapOriendegreesInDegrees;
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	/**
-	 * 
-	 * @param exifOrientation
-	 * @return
-	 */
-	private static int exifToDegrees(int exifOrientation) {
-		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-			return 90;
-		} else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-			return 180;
-		} else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-			return 270;
-		}
-		return 0;
-	}
-
-	static public Bitmap computeBitmapWithSaturationEffect(Media media,
-			int targetW, int targetH, float saturation, boolean manageScaleFactor) {
-		Bitmap bitmap = computeBitmap(media, targetW, targetH, manageScaleFactor);
-		bitmap = computeBitmapWithSaturationEffect(bitmap, saturation, manageScaleFactor);
-		return bitmap;
-	}
-
-	static public Bitmap computeBitmapWithBWEffect(Media media, int targetW,
-			int targetH, boolean manageScaleFactor) {
-		Bitmap bitmap = computeBitmap(media, targetW, targetH, manageScaleFactor);
-		bitmap = computeBitmapWithBWEffect(bitmap, manageScaleFactor);
-		return bitmap;
-	}
-
-	static public Bitmap computeBitmapWithBWEffect(Bitmap source, boolean manageScaleFactor) {
-		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
-				source.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bmpMonochrome);
-		ColorMatrix ma = new ColorMatrix();
-		ma.setSaturation(0);
-		Paint paint = new Paint();
-		paint.setColorFilter(new ColorMatrixColorFilter(ma));
-		canvas.drawBitmap(source, 0, 0, paint);
-		return bmpMonochrome;
-	}
-
-	static public Bitmap computeBitmapWithSaturationEffect(Bitmap source,
-			float saturation, boolean manageScaleFactor) {
-		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(),
-				source.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bmpMonochrome);
-		ColorMatrix ma = new ColorMatrix();
-		ma.setSaturation(saturation);
-		Paint paint = new Paint();
-		paint.setColorFilter(new ColorMatrixColorFilter(ma));
-		canvas.drawBitmap(source, 0, 0, paint);
-		return bmpMonochrome;
-	}
-
-	static public Bitmap computeBitmap(Media media, int targetW, int targetH, boolean manageScaleFactor) {
-		if (media == null) {
-			return null;
-		}
-		int photoW = 0;
-		int photoH = 0;
-
-		/* Get the size of the image */
-		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-		bmOptions.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(media.getPath(), bmOptions);
-		photoW = bmOptions.outWidth;
-		photoH = bmOptions.outHeight;
-
-		// Get the bitmap's EXIF orientation
-		int orientationInDegrees = computeBitmapOriendegreesInDegrees(media
-				.getPath());
-
-		/* Figure out which way needs to be reduced less */
-		int scaleFactor = 1;
-		if (((targetW > 0) || (targetH > 0)) && manageScaleFactor) {
-			scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-			if (scaleFactor < 8) {
-				scaleFactor = 8;
-			}
-		}
-		scaleFactor = 8;
-
-		/* Set bitmap options to scale the image decode target */
-		bmOptions.inJustDecodeBounds = false;
-		bmOptions.inSampleSize = scaleFactor;
-		bmOptions.inPurgeable = true;
-
-		/* Decode the JPEG file into a Bitmap */
-		Bitmap bitmap = BitmapFactory.decodeFile(media.getPath(), bmOptions);
-		int byteCount = bitmap.getByteCount();
-
-		if (orientationInDegrees != 0) {
-			Matrix matrix = new Matrix();
-			matrix.preRotate(orientationInDegrees);
-			int bmWidth = bitmap.getWidth();
-			int bmHeight = bitmap.getHeight();
-			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bmWidth, bmHeight,
-					matrix, true);
-		}
-		return bitmap;
-	}
-
+	
 	public static final Parcelable.Creator<PictureController> CREATOR = new Parcelable.Creator<PictureController>() {
 
 		@Override
@@ -251,6 +126,10 @@ public class PictureController extends MediaControllerBase {
 
 	};
 
+	/**
+	 * Sauvegarde du {@link Media} (champ #media).
+	 * @param historic
+	 */
 	public void save(Historic historic) {
 		if (media != null) {
 			historic.add(media);
@@ -260,7 +139,7 @@ public class PictureController extends MediaControllerBase {
 
 	public void save(Media media, Bitmap bitmap) {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+		bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY, bytes);
 
 		// you can create a new file name "test.jpg" in sdcard folder.
 		File f = new File(media.getPath());
@@ -279,5 +158,14 @@ public class PictureController extends MediaControllerBase {
 
 		}
 	}
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+	
 
 }

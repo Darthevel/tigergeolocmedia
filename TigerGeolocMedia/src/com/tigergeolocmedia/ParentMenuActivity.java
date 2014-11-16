@@ -22,6 +22,12 @@ public class ParentMenuActivity extends Activity {
 	private String[] drawerItemsList;
 	private ListView myDrawer;
 	private DrawerLayout drawerLayout;
+	
+	
+
+	public ParentMenuActivity() {
+		super();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +90,11 @@ public class ParentMenuActivity extends Activity {
 				break;
 			case 5:
 				intent = new Intent(getApplicationContext(), MapActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
+				break;
+			case 6:
+				intent = new Intent(getApplicationContext(), ShowListUsersActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				break;

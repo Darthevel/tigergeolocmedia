@@ -17,15 +17,15 @@ public class Constants {
 	public final static String MOVIE_SUFFIX = MP4_FILE_SUFFIX;
 	public final static String SOUND_SUFFIX = GP3_FILE_SUFFIX;
 	public final static String TIME_STAMP_FORMAT = "yyyyMMdd_HHmmss";
-	public static final String PICTURE_CONTROLLER_PARCELABLE = "PICTURE_CONTROLLER_PARCELABLE";
-	public static final String MOVIE_CONTROLLER_PARCELABLE = "MOVIE_CONTROLLER_PARCELABLE";
+	
 	
 	public static final String MY_PREFS_NAME = "MyPrefsFile";
 	
 	public final static String PICTURE_CONTROLLER = "PICTURE_CONTROLLER";
+	public final static String MOVIE_CONTROLLER = "MOVIE_CONTROLLER";
 	
 	public final static String MOVIE_URI = "MOVIE_URI";
 
 	public static final String VIDEO_STORAGE_KEY = "VIDEO_STORAGE_KEY";
-
+	
 }

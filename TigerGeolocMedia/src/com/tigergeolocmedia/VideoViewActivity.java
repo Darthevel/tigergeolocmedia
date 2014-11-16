@@ -1,5 +1,7 @@
 package com.tigergeolocmedia;
 
+import com.tigergeolocmedia.util.Registry;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +9,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +24,9 @@ public class VideoViewActivity extends ParentMenuActivity {
 	private ProgressDialog progressDialog;
 	private MediaController mediaControls;
 	
+	/**
+	 * Champ dans lequel l'utilisateur entre la description de sa video.
+	 */
 	private EditText editTextDescription;
 
 	
@@ -53,18 +59,16 @@ public class VideoViewActivity extends ParentMenuActivity {
 		
 		// set the main layout of the activity
 		setContentView(R.layout.activity_video_view);
-
 		
 		historic = Historic.getInstance(getApplicationContext());
 		
 		editTextDescription = (EditText) findViewById(R.id.editTextDescription);
-
-
-
 		
+	
 		Intent intent = getIntent();
-		MovieController controller = intent
-				.getParcelableExtra(Constants.MOVIE_CONTROLLER_PARCELABLE);
+//		MovieController controller = intent
+//				.getParcelableExtra(Constants.MOVIE_CONTROLLER_PARCELABLE);
+		MovieController controller = Registry.get(Constants.MOVIE_CONTROLLER);
 		this.controller = controller;
 
 
@@ -124,11 +128,16 @@ public class VideoViewActivity extends ParentMenuActivity {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 		//we use onSaveInstanceState in order to store the video playback position for orientation change
-		savedInstanceState.putInt("Position", myVideoView.getCurrentPosition());
+		outState.putInt("Position", myVideoView.getCurrentPosition());
 		myVideoView.pause();
+		
+		outState.putBoolean(ITEM_SAVE_ENABLED_KEY, itemSaveEnabled);
+		outState.putBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY,
+				itemSaveAndSendEnabled);
+		
 	}
 
 	@Override
@@ -137,6 +146,12 @@ public class VideoViewActivity extends ParentMenuActivity {
 		//we use onRestoreInstanceState in order to play the video playback from the stored position 
 		position = savedInstanceState.getInt("Position");
 		myVideoView.seekTo(position);
+		itemSaveEnabled = savedInstanceState.getBoolean(ITEM_SAVE_ENABLED_KEY);
+		itemSaveAndSendEnabled = savedInstanceState
+				.getBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY);
+		if (!itemSaveEnabled) {
+			disable();
+		}
 	}
 	
 	@Override
@@ -176,6 +191,7 @@ public class VideoViewActivity extends ParentMenuActivity {
 			item = menu.findItem(R.id.itemSave);
 			itemSaveEnabled = false;
 			item.setEnabled(false);
+			disable();
 
 			return true;
 		}
@@ -185,6 +201,7 @@ public class VideoViewActivity extends ParentMenuActivity {
 			// On vient de sauver l'image, on interdit une nouvelle sauvegarde.
 			itemSaveEnabled = false;
 			item.setEnabled(false);
+			disable();
 			return true;
 		}
 		if (id == R.id.itemCancel) {
@@ -194,6 +211,13 @@ public class VideoViewActivity extends ParentMenuActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Désactivation du contrôle {@link #editTextDescription}.
+	 */
+	private void disable() {
+		editTextDescription.setEnabled(false);
+	}
+
 	/**
 	 * Méthode appelée quand le menu cancel (R.id.itemCancel) est cliqué .
 	 */
@@ -234,10 +258,5 @@ public class VideoViewActivity extends ParentMenuActivity {
 		controller.save(historic);
 
 	}
-
-
-
-
-
 
 }
