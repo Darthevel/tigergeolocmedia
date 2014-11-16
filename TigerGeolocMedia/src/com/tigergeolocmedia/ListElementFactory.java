@@ -12,6 +12,7 @@ import android.media.ThumbnailUtils;
 import android.provider.MediaStore.Video.Thumbnails;
 
 import com.squareup.picasso.Picasso;
+import com.tigergeolocmedia.Media.MediaType;
 
 public class ListElementFactory implements Observable.OnSubscribe<HistoricElement>{
 

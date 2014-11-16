@@ -256,6 +256,8 @@ public class VideoViewActivity extends ParentMenuActivity {
 
 		// On sauve l'historique
 		controller.save(historic);
+		
+		
 
 	}
 

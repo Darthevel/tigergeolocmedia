@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.util.Registry;
 
 /**

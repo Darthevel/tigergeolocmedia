@@ -7,6 +7,9 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import com.tigergeolocmedia.Media.MediaType;
+
+
 /*
  * Classe qui "controle" la creation (l'enregistrement) d'un son
  * 

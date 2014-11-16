@@ -1,5 +1,8 @@
 package com.tigergeolocmedia;
 
+import com.tigergeolocmedia.Media.MediaType;
+import com.tigergeolocmedia.dba.HistoCrud;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -142,6 +145,11 @@ public class SoundActivity extends ParentMenuActivity {
 	public void saveAndSend() {
 		soundController.setDescription(description.getText().toString());
 		historic.add(soundController.getMedia());
+		
+		//Using SQLite
+		HistoCrud db = new HistoCrud();
+		db.create(this, soundController.getMedia());
+		
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
@@ -234,3 +242,4 @@ public class SoundActivity extends ParentMenuActivity {
 		return super.onOptionsItemSelected(item);
 	}
 }
+

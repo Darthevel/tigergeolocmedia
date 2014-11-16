@@ -104,6 +104,10 @@
             android:name=".ShowListUsersActivity"
             android:label="@string/title_activity_show_list_users" >
         </activity>
+        <activity
+            android:name="HistoricBDDActivity"
+            android:label="@string/title_activity_historic_bdd">
+        </activity>
     </application>
 
 </manifest>

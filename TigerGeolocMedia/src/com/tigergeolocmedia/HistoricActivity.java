@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.tigergeolocmedia.Media;
+import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.util.Registry;
 
 public class HistoricActivity extends ParentMenuActivity {

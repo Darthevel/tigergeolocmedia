@@ -11,13 +11,17 @@ import rx.schedulers.Schedulers;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.PictureController.VisualEffect;
 import com.tigergeolocmedia.util.Registry;
+import com.tigergeolocmedia.dba.HistoCrud;
+
 
 /**
  * Activité gérant les images.
@@ -296,6 +300,7 @@ public class PictureActivity extends ParentMenuActivity {
 		// On colle la description dans le media.
 		media.setDescription(editTextDescription.getText().toString());
 
+
 		File file = new File(media.getPath());
 
 		TigerBitmapFactory bitmapFactory = new TigerBitmapFactory(
@@ -320,6 +325,15 @@ public class PictureActivity extends ParentMenuActivity {
 					}
 
 				});
+
+		
+		//Using SQLite
+		HistoCrud db = new HistoCrud();
+		db.create(this, controller.getMedia());
+		String log = "ID = "+ controller.getMedia().getId() +
+				", NAME = "+ controller.getMedia().getName() +
+				", MEDIATYPE = "+ controller.getMedia().getType();
+		Log.d("test get:Media", log);
 
 	}
 

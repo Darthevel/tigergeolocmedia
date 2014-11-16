@@ -1,6 +1,8 @@
 package com.tigergeolocmedia;
 
 import android.graphics.Bitmap;
+import com.tigergeolocmedia.Media.MediaType;
+
 
 public class HistoricElement{
 
