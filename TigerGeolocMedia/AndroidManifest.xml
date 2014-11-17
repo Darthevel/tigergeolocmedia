@@ -108,6 +108,7 @@
             android:name="HistoricBDDActivity"
             android:label="@string/title_activity_historic_bdd">
         </activity>
+        <service android:name="PlaySoundService"></service>
     </application>
 
 </manifest>
