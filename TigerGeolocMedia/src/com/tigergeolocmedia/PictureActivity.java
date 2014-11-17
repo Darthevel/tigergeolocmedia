@@ -1,9 +1,13 @@
 package com.tigergeolocmedia;
 
+import java.io.File;
 
+import rx.Observable;
 import rx.android.events.OnClickEvent;
 import rx.android.observables.ViewObservable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,9 +19,15 @@ import android.widget.ImageView;
 
 import com.tigergeolocmedia.Media.MediaType;
 import com.tigergeolocmedia.PictureController.VisualEffect;
+import com.tigergeolocmedia.util.Registry;
 import com.tigergeolocmedia.dba.HistoCrud;
-import com.tigergeolocmedia.dba.TigerBaseSQLite;
 
+
+/**
+ * Activité gérant les images.
+ * @author HumanBooster
+ *
+ */
 public class PictureActivity extends ParentMenuActivity {
 
 	private static final String VISUAL_EFFECT_KEY = "VISUAL_EFFECT_KEY";
@@ -27,9 +37,19 @@ public class PictureActivity extends ParentMenuActivity {
 	 */
 	private static final float SATURATION = 2.0f;
 
+	/**
+	 * L'effet courant : initialisé à {@link VisualEffect#NONE}.
+	 */
 	private PictureController.VisualEffect visualEffect = VisualEffect.NONE;
 
+	/**
+	 * L'historique dans lequel l'image sera éventuellement sauvegardée.
+	 */
 	private Historic historic = null;
+	
+	/**
+	 * Le {@link Menu} de l'activité.
+	 */
 	private Menu menu;
 
 	/**
@@ -37,14 +57,31 @@ public class PictureActivity extends ParentMenuActivity {
 	 */
 	private PictureController controller;
 
+	/**
+	 * L'{@link ImageView} dans laquelle l'image sera visualisée.
+	 */
 	private ImageView pictureView;
 
+	/**
+	 * L'{@link ImageView} dans laquelle s'effectue le preview de l'image sur laquelle l'effet BW est apliqué.
+	 */
 	private ImageView imageViewVisualEffectBW;
+	
+	/**
+	 * L'{@link ImageView} dans laquelle s'effectue le preview de l'image sur laquelle l'effet SATURATION est apliqué.
+	 */
 	private ImageView imageViewVisualEffectSaturation;
+	
+	/**
+	 * L'{@link ImageView} dans laquelle s'effectue le preview de l'image sur laquelle l'effet NONE est apliqué.
+	 */
 	private ImageView imageViewVisualEffectNone;
 
+	/**
+	 * L'{@link EditText} dans lequel l'utilisateur entre la description de l'image.
+	 */
 	private EditText editTextDescription;
-	
+
 	/**
 	 * Par défaut, l'image peut être sauvée.
 	 */
@@ -64,9 +101,8 @@ public class PictureActivity extends ParentMenuActivity {
 
 		historic = Historic.getInstance(getApplicationContext());
 
-		Intent intent = getIntent();
-		PictureController controller = intent
-				.getParcelableExtra(Constants.PICTURE_CONTROLLER_PARCELABLE);
+		PictureController controller = Registry
+				.get(Constants.PICTURE_CONTROLLER);
 		this.controller = controller;
 		pictureView = (ImageView) findViewById(R.id.pictureViewPicture);
 
@@ -90,7 +126,7 @@ public class PictureActivity extends ParentMenuActivity {
 
 					@Override
 					public void call(OnClickEvent arg0) {
-						applyVisualEffectBW(true);
+						applyVisualEffectBW();
 
 					}
 				});
@@ -112,9 +148,13 @@ public class PictureActivity extends ParentMenuActivity {
 		// Effet SATURATION Fin
 
 		editTextDescription = (EditText) findViewById(R.id.editTextDescription);
-
+		
 	}
 
+	/**
+	 * Application de l'effet saturation ({@link VisualEffect#SATURATION}).
+	 * @param manageScaleFactor 
+	 */
 	protected void applyVisualEffectsaturation(boolean manageScaleFactor) {
 		applyVisualEffectsaturation(SATURATION, manageScaleFactor);
 	}
@@ -122,26 +162,30 @@ public class PictureActivity extends ParentMenuActivity {
 	protected void applyVisualEffectsaturation(float saturation,
 			boolean manageScaleFactor) {
 		visualEffect = VisualEffect.SATURATION;
-		Bitmap bwBitmap = PictureController.computeBitmapWithSaturationEffect(
-				controller.getMedia(), pictureView.getWidth(),
-				pictureView.getHeight(), saturation, manageScaleFactor);
-		pictureView.setImageBitmap(bwBitmap);
+		// Bitmap bwBitmap =
+		// PictureController.computeBitmapWithSaturationEffect(
+		// controller.getMedia(), pictureView.getWidth(),
+		// pictureView.getHeight(), saturation, manageScaleFactor);
+		// pictureView.setImageBitmap(bwBitmap);
+		setPic(controller.getMedia(), pictureView, visualEffect);
 	}
 
 	protected void applyVisualEffectNONE(boolean manageScaleFactor) {
 		visualEffect = VisualEffect.NONE;
-		Bitmap bwBitmap = PictureController.computeBitmap(
-				controller.getMedia(), pictureView.getWidth(),
-				pictureView.getHeight(), manageScaleFactor);
-		pictureView.setImageBitmap(bwBitmap);
+		// Bitmap bwBitmap = PictureController.computeBitmap(
+		// controller.getMedia(), pictureView.getWidth(),
+		// pictureView.getHeight(), manageScaleFactor);
+		// pictureView.setImageBitmap(bwBitmap);
+		setPic(controller.getMedia(), pictureView, visualEffect);
 	}
 
-	protected void applyVisualEffectBW(boolean manageScaleFactor) {
+	protected void applyVisualEffectBW() {
 		visualEffect = VisualEffect.BW;
-		Bitmap bwBitmap = PictureController.computeBitmapWithBWEffect(
-				controller.getMedia(), pictureView.getWidth(),
-				pictureView.getHeight(), manageScaleFactor);
-		pictureView.setImageBitmap(bwBitmap);
+		// Bitmap bwBitmap = PictureController.computeBitmapWithBWEffect(
+		// controller.getMedia(), pictureView.getWidth(),
+		// pictureView.getHeight(), manageScaleFactor);
+		// pictureView.setImageBitmap(bwBitmap);
+		setPic(controller.getMedia(), pictureView, visualEffect);
 	}
 
 	@Override
@@ -149,16 +193,34 @@ public class PictureActivity extends ParentMenuActivity {
 		this.menu = menu;
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.picture, menu);
-		
+
 		if (!itemSaveEnabled) {
 			MenuItem item = menu.findItem(R.id.itemSave);
+			disable();
 			item.setEnabled(false);
 		}
 		if (!itemSaveAndSendEnabled) {
 			MenuItem item = menu.findItem(R.id.itemSaveAndSend);
+			disable();
 			item.setEnabled(false);
 		}
 		return true;
+	}
+
+	/**
+	 * Désactivation des contrôles suivants: <li>{@link #editTextDescription}
+	 * <li>{@link #imageViewVisualEffectBW} <li>
+	 * {@link #imageViewVisualEffectNone} <li>
+	 * {@link #imageViewVisualEffectSaturation} En effet, une fois que l'image a
+	 * été sauvegardée, il n'est plus possible, ni de modifier sa description,
+	 * ni d'appliquer un effet dessus
+	 */
+	private void disable() {
+		editTextDescription.setEnabled(false);
+		imageViewVisualEffectBW.setEnabled(false);
+		imageViewVisualEffectNone.setEnabled(false);
+		imageViewVisualEffectSaturation.setEnabled(false);
+
 	}
 
 	@Override
@@ -175,21 +237,23 @@ public class PictureActivity extends ParentMenuActivity {
 			// On vient d'envoyer l'image, on interdit un nouvel envoi.
 			item.setEnabled(false);
 			itemSaveAndSendEnabled = false;
-			
+
 			// En avant d'envoyer l'image, on l'a aussi sauvée
 			// on interdit donc une nouvelle sauvegarde.
 			item = menu.findItem(R.id.itemSave);
 			itemSaveEnabled = false;
 			item.setEnabled(false);
+			disable();
 
 			return true;
 		}
 		if (id == R.id.itemSave) {
 			save();
-			
+
 			// On vient de sauver l'image, on interdit une nouvelle sauvegarde.
 			itemSaveEnabled = false;
 			item.setEnabled(false);
+			disable();
 			return true;
 		}
 		if (id == R.id.itemCancel) {
@@ -226,38 +290,42 @@ public class PictureActivity extends ParentMenuActivity {
 		// TODO : implémenter cette fonctionnalité.
 	}
 
-	private Bitmap computeCurrentBitmap() {
-		Bitmap bitmap = PictureController.computeBitmap(controller.getMedia(),
-				pictureView.getWidth(), pictureView.getHeight(), false);
-
-		if (visualEffect.equals(VisualEffect.BW)) {
-			bitmap = PictureController.computeBitmapWithBWEffect(bitmap, false);
-		} else if (visualEffect.equals(VisualEffect.SATURATION)) {
-			bitmap = PictureController.computeBitmapWithSaturationEffect(
-					bitmap, SATURATION, false);
-		}
-		return bitmap;
-
-	}
-
+	/**
+	 * Sauvegarde de l'image (du {@link Media}).
+	 */
 	private void save() {
 		// Récuoération du media
-		Media media = controller.getMedia();
+		final Media media = controller.getMedia();
 
 		// On colle la description dans le media.
 		media.setDescription(editTextDescription.getText().toString());
 
 
-		// Récup du bitmap courant
-		Bitmap currentBitmap = computeCurrentBitmap();
+		File file = new File(media.getPath());
 
-		// On sauve l'image (avec l'effet).
-		controller.save(media, currentBitmap);
+		TigerBitmapFactory bitmapFactory = new TigerBitmapFactory(
+				getApplicationContext(), file, null);
+		bitmapFactory.setVisualEffect(visualEffect);
 
-		// On sauve l'historique
-		controller.save(historic);
+		Observable<Bitmap> observable = Observable.create(bitmapFactory);
 
-		historic.add(controller.getMedia());
+		observable.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Action1<Bitmap>() {
+
+					@Override
+					public void call(Bitmap bitmap) {
+						if (bitmap != null) {
+							// On sauve l'image (avec l'effet).
+							controller.save(media, bitmap);
+
+							// On sauve l'historique
+							controller.save(historic);
+						}
+					}
+
+				});
+
 		
 		//Using SQLite
 		HistoCrud db = new HistoCrud();
@@ -281,7 +349,7 @@ public class PictureActivity extends ParentMenuActivity {
 		restoreImage();
 	}
 
-	private void restoreImage() {
+	protected void restoreImage() {
 		Media media = controller.getMedia();
 
 		if (media != null) {
@@ -293,37 +361,45 @@ public class PictureActivity extends ParentMenuActivity {
 
 	}
 
-	private static void setPic(Media media, ImageView imageView,
-			VisualEffect effect, boolean manageScaleFactor) {
-		/* There isn't enough memory to open up more than a couple camera photos */
-		/* So pre-scale the target bitmap into which the file is decoded */
+	private void setPic(final Media media, final ImageView imageView,
+			VisualEffect effect) {
 
-		/* Get the size of the ImageView */
-		int targetW = imageView.getWidth();
-		int targetH = imageView.getHeight();
+		File file = new File(media.getPath());
 
-		Bitmap bitmap = PictureController.computeBitmap(media, targetW,
-				targetH, manageScaleFactor);
+		TigerBitmapFactory bitmapFactory = new TigerBitmapFactory(
+				getApplicationContext(), file, imageView);
+		bitmapFactory.setVisualEffect(effect);
 
-		if (effect.equals(VisualEffect.BW)) {
-			bitmap = PictureController.computeBitmapWithBWEffect(bitmap,
-					manageScaleFactor);
-		} else if (effect.equals(VisualEffect.SATURATION)) {
-			bitmap = PictureController.computeBitmapWithSaturationEffect(
-					bitmap, SATURATION, manageScaleFactor);
-		}
+		Observable<Bitmap> observable = Observable.create(bitmapFactory);
 
-		/* Associate the Bitmap to the ImageView */
-		imageView.setImageBitmap(bitmap);
+		observable.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Action1<Bitmap>() {
+
+					@Override
+					public void call(Bitmap bitmap) {
+						imageView.setImageBitmap(bitmap);
+					}
+
+				});
+
 	}
 
+
+	/**
+	 * Remplit les {@link ImageView}s suivantes:
+	 * <li>{@link #pictureView}
+	 * <li>{@link #imageViewVisualEffectBW}
+	 * <li>{@link #imageViewVisualEffectSaturation}
+	 * <li>{@link #imageViewVisualEffectNone}
+	 * @param media
+	 */
 	private void setPic(Media media) {
 
-		setPic(media, pictureView, visualEffect, true);
-		setPic(media, imageViewVisualEffectBW, VisualEffect.BW, true);
-		setPic(media, imageViewVisualEffectSaturation, VisualEffect.SATURATION,
-				true);
-		setPic(media, imageViewVisualEffectNone, VisualEffect.NONE, true);
+		setPic(media, pictureView, visualEffect);
+		setPic(media, imageViewVisualEffectBW, VisualEffect.BW);
+		setPic(media, imageViewVisualEffectSaturation, VisualEffect.SATURATION);
+		setPic(media, imageViewVisualEffectNone, VisualEffect.NONE);
 	}
 
 	@Override
@@ -331,7 +407,8 @@ public class PictureActivity extends ParentMenuActivity {
 		super.onSaveInstanceState(outState);
 		outState.putString(VISUAL_EFFECT_KEY, visualEffect.toString());
 		outState.putBoolean(ITEM_SAVE_ENABLED_KEY, itemSaveEnabled);
-		outState.putBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY, itemSaveAndSendEnabled);
+		outState.putBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY,
+				itemSaveAndSendEnabled);
 	}
 
 	@Override
@@ -353,10 +430,11 @@ public class PictureActivity extends ParentMenuActivity {
 			break;
 		}
 		itemSaveEnabled = savedInstanceState.getBoolean(ITEM_SAVE_ENABLED_KEY);
-		itemSaveAndSendEnabled = savedInstanceState.getBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY);
+		itemSaveAndSendEnabled = savedInstanceState
+				.getBoolean(ITEM_SAVE_AND_SEND_ENABLED_KEY);
+		if (!itemSaveEnabled) {
+			disable();
+		}
 	}
-	
-	
-
 
 }

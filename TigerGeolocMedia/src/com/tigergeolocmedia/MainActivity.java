@@ -4,7 +4,6 @@ import java.io.File;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -45,13 +44,38 @@ public class MainActivity extends ParentMenuActivity {
 	/**
 	 * Contrôleur d'images.
 	 */
-	private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+	// private PictureController pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+	private PictureController pictureController = null;
 	
 	
+	
+	public MainActivity() {
+		super();
+		
+		initControllers();
+	}
+
+	private void initControllers() {
+		pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+		if (pictureController == null) {
+			pictureController = new PictureController(Constants.IMAGE_PREFIX, Constants.IMAGE_SUFFIX, Constants.PICTURE_DIRECTORY, this);
+			Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
+		}
+		pictureController.setActivity(this);
+		
+		movieController = Registry.get(Constants.MOVIE_CONTROLLER);
+		if (movieController == null) {
+			movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+			Registry.register(Constants.MOVIE_CONTROLLER, movieController);
+		}
+		movieController.setActivity(this);
+	}
+
 	/**
 	 * Contrôleur de video.
 	 */
-	private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+	// private MovieController movieController = new MovieController(Constants.MOVIE_PREFIX, Constants.MOVIE_SUFFIX, Constants.MOVIE_DIRECTORY, this);
+	private MovieController movieController = null;
 
 	private Historic historic = null;
 
@@ -95,6 +119,7 @@ public class MainActivity extends ParentMenuActivity {
 
 		});
 		pictureView = (ImageView) findViewById(R.id.pictureView);
+		// Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").error(R.drawable.error).into(pictureView);
 	}
 
 	protected void takeMovie() {
@@ -159,19 +184,6 @@ public class MainActivity extends ParentMenuActivity {
 		startPictureActivity();
 	}
 	
-	private void setPic(Media media) {
-		/* There isn't enough memory to open up more than a couple camera photos */
-		/* So pre-scale the target bitmap into which the file is decoded */
-
-		/* Get the size of the ImageView */
-		int targetW = pictureView.getWidth();
-		int targetH = pictureView.getHeight();
-		
-		Bitmap currentBitmap = PictureController.computeBitmap(media, targetW, targetH, true);
-		
-		/* Associate the Bitmap to the ImageView */
-		pictureView.setImageBitmap(currentBitmap);
-	}
 	
 	private void handleMovie() {
 
@@ -199,7 +211,7 @@ public class MainActivity extends ParentMenuActivity {
 		initial = savedInstanceState.getBoolean(INITIAL_KEY);
 		
 		
-		pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+		// pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
 
 	}
 	
@@ -238,14 +250,15 @@ public class MainActivity extends ParentMenuActivity {
 		outState.putParcelable(Constants.VIDEO_STORAGE_KEY, videoURI);
 
 		
-		Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
+		// Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
 
 	}
 	
 	private void startPictureActivity() {
 		if (pictureController.getMedia() != null) {
 			Intent intent = new Intent(this, PictureActivity.class);
-			intent.putExtra(Constants.PICTURE_CONTROLLER_PARCELABLE, pictureController);
+			// intent.putExtra(Constants.PICTURE_CONTROLLER_PARCELABLE, pictureController);
+			// Registry.register(Constants.PICTURE_CONTROLLER, pictureController);
 			startActivity(intent);
 		}
 	}
@@ -260,7 +273,8 @@ public class MainActivity extends ParentMenuActivity {
 
 			Intent intent = new Intent(this, VideoViewActivity.class);
 			
-			intent.putExtra(Constants.MOVIE_CONTROLLER_PARCELABLE, movieController);
+			// intent.putExtra(Constants.MOVIE_CONTROLLER_PARCELABLE, movieController);
+			// Registry.register(Constants.MOVIE_CONTROLLER, movieController);
 			intent.putExtra(Constants.MOVIE_URI, videoURI);
 			startActivity(intent);
 		}

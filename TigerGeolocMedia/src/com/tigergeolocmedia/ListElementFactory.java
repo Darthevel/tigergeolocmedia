@@ -1,12 +1,18 @@
 package com.tigergeolocmedia;
 
+import java.io.File;
+import java.io.IOException;
 
 import rx.Observable;
 import rx.Subscriber;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore.Video.Thumbnails;
 
+import com.squareup.picasso.Picasso;
+import com.tigergeolocmedia.Media.MediaType;
 
 public class ListElementFactory implements Observable.OnSubscribe<HistoricElement>{
 
@@ -15,6 +21,26 @@ public class ListElementFactory implements Observable.OnSubscribe<HistoricElemen
 	public ListElementFactory(Context context) {
 		super();
 		this.context = context;
+	}
+	
+	
+	private Bitmap computeThumbNail(Media media, BitmapFactory.Options options) {
+		Bitmap bitmap = null;
+		if (media.getType().equals(MediaType.PICTURE)) {
+			bitmap = BitmapFactory.decodeFile(media.getPath(), options);
+			
+			bitmap = ThumbnailUtils.extractThumbnail(bitmap, 80, 80, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+		    
+		}
+		else if (media.getType().equals(MediaType.MOVIE)) {
+			bitmap = ThumbnailUtils.createVideoThumbnail(media.getPath(), Thumbnails.MICRO_KIND);
+
+		}
+		else if (media.getType().equals(MediaType.SOUND)) {
+			bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sound);
+
+		}
+		return bitmap;
 	}
 
 	@Override
@@ -30,9 +56,10 @@ public class ListElementFactory implements Observable.OnSubscribe<HistoricElemen
 			
 			for (Media m : historic.getMediaList()) {
 				
+				// options.inSampleSize = 8 permet de réduire la taille du bitmap obtenu.
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 8;
-				Bitmap myBitmap = BitmapFactory.decodeFile(m.getPath(), options);
+				Bitmap myBitmap = computeThumbNail(m, options);
 				
 				HistoricElement element = new HistoricElement(m.getName(), m.getDescription(), m.getType(), myBitmap);
 				arg0.onNext(element);

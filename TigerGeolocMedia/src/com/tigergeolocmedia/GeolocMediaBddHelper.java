@@ -1,5 +1,11 @@
 package com.tigergeolocmedia;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import com.tigergeolocmedia.UserContract.Users;
 
 import android.content.ContentValues;
@@ -94,5 +100,42 @@ public class GeolocMediaBddHelper extends SQLiteOpenHelper {
 		c.close();
 		
     	return user;
+    }
+    
+    public List<Person> getUsers(String selection, String[] selectionArgs){
+    	
+    	List<Person> usersList = new ArrayList<Person>();
+    	
+		SQLiteDatabase readableDB = this.getReadableDatabase();
+		
+		String[] projection = {
+			    Users._ID,
+			    Users.COLUMN_NAME_USER_ID,
+			    Users.COLUMN_NAME_USERNAME,
+			    Users.COLUMN_NAME_EMAIL,
+			    };
+
+		Cursor c = readableDB.query(
+			    Users.TABLE_NAME,      // The table to query
+			    projection,            // The columns to return, null = ALL
+			    selection,             // WHERE clause, using ?s for values
+			    selectionArgs,         // The values for the WHERE clause
+			    null,               // GROUP BY clause (rows grouping)
+			    null,                // HAVING clause (group filtering)
+			    null              // ORDER BY clause
+			    );
+
+		c.moveToFirst();
+		while (! c.isAfterLast()) {
+	    	Person user = new Person();
+			user.setId(Long.valueOf(c.getLong(c.getColumnIndexOrThrow(Users._ID))).intValue());
+		    user.setLogin(c.getString(c.getColumnIndexOrThrow(Users.COLUMN_NAME_USERNAME)));
+		    user.setEmail(c.getString(c.getColumnIndexOrThrow(Users.COLUMN_NAME_EMAIL)));
+		    usersList.add(user);
+		    c.moveToNext();
+		}
+		c.close();
+		
+		return usersList;
     }
 }

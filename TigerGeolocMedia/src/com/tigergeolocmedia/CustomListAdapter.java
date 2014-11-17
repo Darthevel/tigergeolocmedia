@@ -100,6 +100,6 @@ public class CustomListAdapter extends BaseAdapter implements Observer<HistoricE
 
 	@Override
 	public boolean isEnabled(int position) {
-		return false;
+		return true;
 	}
 }

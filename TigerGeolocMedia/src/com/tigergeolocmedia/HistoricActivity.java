@@ -1,5 +1,7 @@
 package com.tigergeolocmedia;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import rx.Observable;
 import rx.android.events.OnItemClickEvent;
 import rx.android.observables.ViewObservable;
@@ -7,13 +9,18 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.tigergeolocmedia.Media;
+import com.tigergeolocmedia.Media.MediaType;
+import com.tigergeolocmedia.util.Registry;
+
 public class HistoricActivity extends ParentMenuActivity {
 
-	private ListView listView;
+	@InjectView(R.id.listView) ListView listView;
 	private Historic historic;
 	private Context context;
 	
@@ -21,6 +28,12 @@ public class HistoricActivity extends ParentMenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_historic);
+		
+		// Pas besoin d'ActionBar ici.
+		getActionBar().hide();
+
+		
+		ButterKnife.inject(this);
 		
 		context = getApplicationContext();
 		historic = Historic.getInstance(context);
@@ -45,9 +58,33 @@ public class HistoricActivity extends ParentMenuActivity {
 					int position = listView.getPositionForView(e.view);
 					Media media = historic.getMediaList().get(position);
 					Toast.makeText(context, getString(R.string.youClickedOn) + media.getName(), Toast.LENGTH_SHORT).show();
-					//TODO changer d'activité pour pouvoir afficher le media en grand avec ses informations et le jouer
+					showMedia(media);
 				}
 				
 			});
+	}
+
+	protected void showMedia(Media media) {
+		if (media.getType().equals(MediaType.PICTURE)) {
+			PictureController pictureController = Registry.get(Constants.PICTURE_CONTROLLER);
+			pictureController.setMedia(media);
+			
+			Intent intent = new Intent(this, PictureActivityReadOnly.class);
+			startActivity(intent);
+
+			return;
+		}
+		if (media.getType().equals(MediaType.MOVIE)) {
+			MovieController movieController = Registry.get(Constants.MOVIE_CONTROLLER);
+			movieController.setMedia(media);
+			
+			Intent intent = new Intent(this, VideoViewActivityReadOnly.class);
+			startActivity(intent);
+			return;
+		}
+		if (media.getType().equals(MediaType.SOUND)) {
+			return;
+		}
+		
 	}
 }
