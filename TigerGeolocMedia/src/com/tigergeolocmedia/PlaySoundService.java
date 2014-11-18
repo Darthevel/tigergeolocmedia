@@ -47,7 +47,6 @@ public class PlaySoundService extends IntentService {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 	
