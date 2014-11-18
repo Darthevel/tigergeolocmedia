@@ -39,26 +39,6 @@ public class SoundActivity extends ParentMenuActivity {
 		setContentView(R.layout.activity_sound);
 
 		ButterKnife.inject(this);
-		
-		recordButton = (Button) findViewById(R.id.recordButton);
-		recordButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				record();
-				
-			}
-		});
-		playButton = (Button) findViewById(R.id.playSoundButton);
-		playButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				playSound();
-				
-			}
-		});
-		description = (EditText) findViewById(R.id.soundDescription);
 
 		// Initialisation des bouttons et champs de l'activité
 		// Recuperation de l'historique pour pouvoir stoquer tout nouveaux sons
@@ -127,14 +107,22 @@ public class SoundActivity extends ParentMenuActivity {
 	public void playSound() {
 		if (soundController.isPlaying()) {
 			playButton.setText(R.string.play);
-			soundController.stop();
 			soundController.setPlaying(false);
+
+			getApplicationContext().stopService(new Intent(getApplicationContext(), PlaySoundService.class));
+			
+			//soundController.stop();
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
 			lockRotation();
 			playButton.setText(R.string.stop);
-			soundController.play();
 			soundController.setPlaying(true);
+			
+			Intent i=new Intent(getApplicationContext(), PlaySoundService.class);
+			i.putExtra("path", soundController.getMedia().getPath());
+			startService(i);
+			
+			//soundController.play();
 		}
 	}
 
