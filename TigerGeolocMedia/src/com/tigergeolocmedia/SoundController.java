@@ -80,6 +80,7 @@ public class SoundController extends MediaControllerBase {
 		} catch (IOException ioException) {
 			Log.e(LOG_TAG, "File / Media creation failed");
 		}
+
 		// Creation du MediaRecorder, initialisation de ses parametre (Source de
 		// l'enregistrement, format du fichier, localisation du fichier, type
 		// d'encodage)

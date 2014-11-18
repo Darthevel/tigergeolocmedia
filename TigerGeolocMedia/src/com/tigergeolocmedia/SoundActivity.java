@@ -1,28 +1,34 @@
 package com.tigergeolocmedia;
 
-import com.tigergeolocmedia.Media.MediaType;
-import com.tigergeolocmedia.dba.HistoCrud;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.view.WindowManager;
+import android.widget.Toast;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
+import com.tigergeolocmedia.Media.MediaType;
+import com.tigergeolocmedia.RecordSoundService.RecordSoundServiceInnerClass;
+import com.tigergeolocmedia.dba.HistoCrud;
 
 public class SoundActivity extends ParentMenuActivity {
 
 	@InjectView(R.id.recordButton) Button recordButton;
 	@InjectView(R.id.playSoundButton) Button playButton;
 	@InjectView(R.id.soundDescription) EditText description;
+	
+	private RecordSoundServiceInnerClass recordService;
 
 	private Historic historic = null; 
 
@@ -49,6 +55,23 @@ public class SoundActivity extends ParentMenuActivity {
 		if (soundController.getMedia() == null)
 			playButton.setEnabled(false);
 		//description = (EditText) findViewById(R.id.soundDescription);
+		Intent intent = new Intent(this, RecordSoundService.class);
+		bindService(intent, new ServiceConnection() {
+		  @Override
+		  public void onServiceConnected(ComponentName name, IBinder service) {
+
+		      // Actual implementation is known, either because it is our local Service
+		      // or because the service provider published a public target interface
+			  recordService = (RecordSoundServiceInnerClass)service;
+
+		      Toast.makeText(getApplicationContext(), recordService.test(), Toast.LENGTH_SHORT).show();
+		  }
+		  @Override
+		  public void onServiceDisconnected(ComponentName name) {
+		      // Returned IBinder is no longer usable...
+		      Toast.makeText(getApplicationContext(), name + " Unbind", Toast.LENGTH_SHORT).show();
+		  }
+		}, 0 /* flags */);
 	}
 
 	/*
@@ -84,16 +107,19 @@ public class SoundActivity extends ParentMenuActivity {
 	public void record() {
 		if (soundController.isRecording()) {
 			recordButton.setText(R.string.record);
-			soundController.stopRecording();
+			//soundController.stopRecording();
+			recordService.stopRecording();
 			soundController.setRecording(false);
 			playButton.setEnabled(true);
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
 			lockRotation();
 			recordButton.setText(R.string.stopRecord);
-			soundController.record();
+			//soundController.record();
+			recordService.record();
 			soundController.setRecording(true);
 		}
+		soundController = recordService.getSoundController();
 	}
 
 	/*
