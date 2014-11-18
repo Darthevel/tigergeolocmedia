@@ -4,10 +4,14 @@ import java.util.List;
 
 import com.tigergeolocmedia.Media;
 import com.tigergeolocmedia.R;
+import com.tigergeolocmedia.Media.MediaType;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,11 +64,18 @@ public class HistoricBddAdapter extends BaseAdapter {
 		TextView tv_Name = (TextView)layoutItem.findViewById(R.id.TV_Name);
 		TextView tv_Type = (TextView)layoutItem.findViewById(R.id.TV_Type);
 		TextView tv_Description = (TextView)layoutItem.findViewById(R.id.TV_Description);
+		Media media = mediaList.get(position);
 		
-		iv_Image.setImageBitmap(BitmapFactory.decodeFile(mediaList.get(position).getPath()));;
-		tv_Name.setText(mediaList.get(position).getName());
-		tv_Type.setText(mediaList.get(position).getType().toString());
-		tv_Description.setText(mediaList.get(position).getDescription());
+		if (media.getType().equals(MediaType.SOUND)) {
+			iv_Image.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.sound));
+		} else if(media.getType().equals(MediaType.MOVIE)) {
+			iv_Image.setImageBitmap(ThumbnailUtils.createVideoThumbnail(media.getPath(), Thumbnails.MICRO_KIND));
+		} else {
+			iv_Image.setImageBitmap(BitmapFactory.decodeFile(media.getPath()));
+		}
+		tv_Name.setText(media.getName());
+		tv_Type.setText(media.getType().toString());
+		tv_Description.setText(media.getDescription());
 		
 		return layoutItem;
 	}

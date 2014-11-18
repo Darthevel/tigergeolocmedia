@@ -1,5 +1,6 @@
 package com.tigergeolocmedia;
 
+import com.tigergeolocmedia.dba.HistoCrud;
 import com.tigergeolocmedia.util.Registry;
 
 import android.app.ProgressDialog;
@@ -257,7 +258,9 @@ public class VideoViewActivity extends ParentMenuActivity {
 		// On sauve l'historique
 		controller.save(historic);
 		
-		
+		//Using SQLite
+		HistoCrud db = new HistoCrud();
+		db.create(this, controller.getMedia());
 
 	}
 
